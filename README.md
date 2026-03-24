@@ -1,42 +1,111 @@
-# website-qs-lp
+# Quasarzero Website
 
-Projet de landing page Quasar.
+Site vitrine bilingue `FR / EN` pour Quasarzero, construit avec `Vite`, `GSAP` et `Lenis`.
+
+## Stack
+
+- `Vite`
+- `GSAP`
+- `Lenis`
+- `Prettier`
+
+## Dépendances
+
+Ce projet **n'utilise pas Python**, donc il ne nécessite **pas** de `requirements.txt`.
+
+Les dépendances du projet sont gérées par :
+
+- [package.json](/Users/koula/Documents/Projects/quasarzero/site%20web/package.json)
+- [package-lock.json](/Users/koula/Documents/Projects/quasarzero/site%20web/package-lock.json)
+
+## Installation
+
+```bash
+npm install
+```
+
+## Lancer en local
+
+```bash
+npm run dev
+```
+
+## Build de production
+
+```bash
+npm run build
+```
+
+## Prévisualiser le build
+
+```bash
+npm run preview
+```
+
+## Formatage
+
+```bash
+npm run format
+```
 
 ## Structure du projet
 
-- `index.html` : page principale (français)
-- `index-en.html` : page principale version anglaise
-- `legal-notice.html`, `mentions-legales.html`, `privacy-policy.html`, `politique-confidentialite.html` : pages juridiques
-- `styles.css` : styles globaux
-- `script.js` : scripts JavaScript
-- `assets/` : ressources (images, icônes, etc.)
-- `data/offers.json` et `data/offers-en.json` : données d’offres
+- [index.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index.html) : home en français
+- [index-en.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index-en.html) : home en anglais
+- [styles.css](/Users/koula/Documents/Projects/quasarzero/site%20web/styles.css) : styles globaux
+- [script.js](/Users/koula/Documents/Projects/quasarzero/site%20web/script.js) : animations, scroll fluide, chargement dynamique du pricing
+- [data/offers.json](/Users/koula/Documents/Projects/quasarzero/site%20web/data/offers.json) : offres en français
+- [data/offers-en.json](/Users/koula/Documents/Projects/quasarzero/site%20web/data/offers-en.json) : offres en anglais
+- [mentions-legales.html](/Users/koula/Documents/Projects/quasarzero/site%20web/mentions-legales.html) : mentions légales FR
+- [politique-confidentialite.html](/Users/koula/Documents/Projects/quasarzero/site%20web/politique-confidentialite.html) : confidentialité FR
+- [legal-notice.html](/Users/koula/Documents/Projects/quasarzero/site%20web/legal-notice.html) : legal notice EN
+- [privacy-policy.html](/Users/koula/Documents/Projects/quasarzero/site%20web/privacy-policy.html) : privacy policy EN
+- [assets](/Users/koula/Documents/Projects/quasarzero/site%20web/assets) : images et visuels
 
-## Installation & usage
+## Fonctionnalités
 
-1. Cloner le dépôt :
-   ```bash
-   git clone <url-du-depot>
-   cd website-qs-lp
-   ```
-2. Ouvrir `index.html` ou `index-en.html` dans le navigateur.
+- site bilingue avec switch `FR / EN`
+- hero éditorial `AI Studio`
+- case studies horizontaux avec barre de défilement
+- pricing dynamique via JSON
+- scroll fluide avec `Lenis`
+- animations de révélation avec `GSAP`
+- pages légales FR / EN
+- CTA Google Calendar dans le header
 
-> Pas de dépendances Node obligatoires pour une version statique. Si présence d’un workflow ou d’un script spécifique, adaptez selon votre environnement.
+## Lien de planification
 
-## Contribuer
+Le lien Google Calendar est actuellement utilisé dans :
 
-1. Créer une branche spécifique :
-   ```bash
-   git checkout -b feature/ma-fonctionnalite
-   ```
-2. Commiter les changements et pousser :
-   ```bash
-   git add .
-   git commit -m "Ajout de ..."
-   git push origin feature/ma-fonctionnalite
-   ```
-3. Ouvrir une Pull Request pour revue.
+- [index.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index.html)
+- [index-en.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index-en.html)
 
-## Licence
+URL actuelle :
 
-Voir `LICENSE`.
+```text
+https://calendar.app.google/NJxBfKmLydDcTFr39
+```
+
+## Mise en ligne
+
+Le projet produit un build statique dans le dossier :
+
+- [dist](/Users/koula/Documents/Projects/quasarzero/site%20web/dist)
+
+Il peut être déployé sur n'importe quel hébergement statique compatible :
+
+- Vercel
+- Netlify
+- GitHub Pages
+- OVH
+- GoDaddy Hosting
+- autre hébergement statique
+
+## Notes légales
+
+Avant mise en ligne définitive, vérifier et compléter si nécessaire :
+
+- l'hébergeur du site
+- l'adresse de l'hébergeur
+- la TVA intracommunautaire si applicable
+- la durée exacte de conservation des données
