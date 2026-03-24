@@ -48,7 +48,7 @@ npm run preview
 npm run format
 ```
 
-## Structure du projet
+## Structure du projet -- fichiers principaux
 
 - [index.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index.html) : home en français
 - [index-en.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index-en.html) : home en anglais
