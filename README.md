@@ -8,15 +8,16 @@ Site vitrine bilingue `FR / EN` pour Quasarzero, construit avec `Vite`, `GSAP` e
 - `GSAP`
 - `Lenis`
 - `Prettier`
+- `GitHub Pages` via `GitHub Actions`
 
 ## Dépendances
 
-Ce projet **n'utilise pas Python**, donc il ne nécessite **pas** de `requirements.txt`.
+Ce projet n'utilise pas Python, donc il ne nécessite pas de `requirements.txt`.
 
-Les dépendances du projet sont gérées par :
+Les dépendances sont gérées par :
 
-- [package.json](/Users/koula/Documents/Projects/quasarzero/site%20web/package.json)
-- [package-lock.json](/Users/koula/Documents/Projects/quasarzero/site%20web/package-lock.json)
+- `package.json`
+- `package-lock.json`
 
 ## Installation
 
@@ -48,19 +49,22 @@ npm run preview
 npm run format
 ```
 
-## Structure du projet -- fichiers principaux
+## Structure du projet
 
-- [index.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index.html) : home en français
-- [index-en.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index-en.html) : home en anglais
-- [styles.css](/Users/koula/Documents/Projects/quasarzero/site%20web/styles.css) : styles globaux
-- [script.js](/Users/koula/Documents/Projects/quasarzero/site%20web/script.js) : animations, scroll fluide, chargement dynamique du pricing
-- [data/offers.json](/Users/koula/Documents/Projects/quasarzero/site%20web/data/offers.json) : offres en français
-- [data/offers-en.json](/Users/koula/Documents/Projects/quasarzero/site%20web/data/offers-en.json) : offres en anglais
-- [mentions-legales.html](/Users/koula/Documents/Projects/quasarzero/site%20web/mentions-legales.html) : mentions légales FR
-- [politique-confidentialite.html](/Users/koula/Documents/Projects/quasarzero/site%20web/politique-confidentialite.html) : confidentialité FR
-- [legal-notice.html](/Users/koula/Documents/Projects/quasarzero/site%20web/legal-notice.html) : legal notice EN
-- [privacy-policy.html](/Users/koula/Documents/Projects/quasarzero/site%20web/privacy-policy.html) : privacy policy EN
-- [assets](/Users/koula/Documents/Projects/quasarzero/site%20web/assets) : images et visuels
+- `index.html` : home en français
+- `index-en.html` : home en anglais
+- `styles.css` : styles globaux
+- `script.js` : animations, scroll fluide, chargement dynamique du pricing
+- `mentions-legales.html` : mentions légales FR
+- `politique-confidentialite.html` : confidentialité FR
+- `legal-notice.html` : legal notice EN
+- `privacy-policy.html` : privacy policy EN
+- `vite.config.js` : configuration multi-pages du build Vite
+- `public/CNAME` : domaine custom GitHub Pages
+- `public/data/offers.json` : offres FR publiées dans le build
+- `public/data/offers-en.json` : offres EN publiées dans le build
+- `assets/` : images et visuels
+- `.github/workflows/deploy.yml` : workflow de déploiement GitHub Pages
 
 ## Fonctionnalités
 
@@ -77,29 +81,39 @@ npm run format
 
 Le lien Google Calendar est actuellement utilisé dans :
 
-- [index.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index.html)
-- [index-en.html](/Users/koula/Documents/Projects/quasarzero/site%20web/index-en.html)
+- `index.html`
+- `index-en.html`
 
 URL actuelle :
 
 ```text
-https://calendar.app.google/NJxBfKmLydDcTFr39
+https://calendar.app.google/Q6rPuyXWyxjVM8BN7
 ```
 
-## Mise en ligne
+## Déploiement
 
-Le projet produit un build statique dans le dossier :
+Le projet est déployé sur `GitHub Pages` via `GitHub Actions`.
 
-- [dist](/Users/koula/Documents/Projects/quasarzero/site%20web/dist)
+Le workflow :
 
-Il peut être déployé sur n'importe quel hébergement statique compatible :
+1. installe les dépendances avec `npm ci`
+2. lance `npm run build`
+3. publie le contenu de `dist`
 
-- Vercel
-- Netlify
-- GitHub Pages
-- OVH
-- GoDaddy Hosting
-- autre hébergement statique
+Le build produit :
+
+- `dist/index.html`
+- `dist/index-en.html`
+- `dist/mentions-legales.html`
+- `dist/politique-confidentialite.html`
+- `dist/legal-notice.html`
+- `dist/privacy-policy.html`
+- `dist/data/offers.json`
+- `dist/data/offers-en.json`
+
+Le domaine custom est défini via :
+
+- `public/CNAME`
 
 ## Notes légales
 
