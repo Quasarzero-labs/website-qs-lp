@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Audit Data & IA",
+    "subtitle": "Cadrer. Prioriser. Décider.",
+    "description": "Idéal pour les entreprises qui veulent structurer leur stratégie data / IA avant d’investir dans un projet plus ambitieux.",
+    "price": "Dès 2k€",
+    "duration": "(2 à 4 jours)",
+    "features": [
+      "Analyse de vos données, outils et usages actuels",
+      "Identification des opportunités data / IA à fort impact",
+      "Priorisation des cas d’usage (ROI, faisabilité, risque)",
+      "Recommandations techniques et organisationnelles",
+      "Plan d’action clair (quick wins + projets structurants)"
+    ]
+  },
+  {
+    "name": "MVP IA",
+    "subtitle": "Une première version qui fonctionne vraiment.",
+    "description": "Pour lancer rapidement un cas d’usage concret avec une base solide, démontrable et exploitable.",
+    "price": "Dès 15k€",
+    "duration": "(4 semaines)",
+    "features": [
+      "Modélisation, agent ou automatisation par cas d’usage",
+      "Intégration API GPT et appel d’outils",
+      "Pipeline minimum de la donnée jusqu’à l’inférence",
+      "Monitoring de base, logs et supervision initiale",
+      "Documentation et passation aux équipes"
+    ]
+  },
+  {
+    "name": "Déploiement Continu",
+    "subtitle": "Déployer votre produit ou service à grande échelle.",
+    "description": "Pour passer d’un prototype validé à un service IA robuste, industrialisé et réellement exploitable.",
+    "price": "Dès 30k€",
+    "duration": "(6 à 8 semaines)",
+    "features": [
+      "MLOps et LLMOps de niveau production",
+      "Déploiement sur site ou dans le cloud",
+      "Service IA opérationnel et supervisé",
+      "Sécurisation, observabilité et stabilité d’exploitation",
+      "Montée en charge progressive et accompagnement"
+    ]
+  },
+  {
+    "name": "Projets Data & IA sur mesure",
+    "subtitle": "De la stratégie à la production.",
+    "description": "Pour les entreprises qui souhaitent concevoir, développer et déployer des solutions data / IA robustes et mesurables.",
+    "price": "Sur devis",
+    "duration": "",
+    "features": [
+      "Conception et cadrage de cas d’usage",
+      "Data engineering et architecture, pipelines, orchestration et gouvernance",
+      "Modèles ML / IA (classique ou LLM)",
+      "Mise en production et industrialisation",
+      "Accompagnement des équipes et transfert de compétences"
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Data & AI Audit",
+    "subtitle": "Frame. Prioritize. Decide.",
+    "description": "Ideal for companies that want to structure their data / AI strategy before investing in a larger initiative.",
+    "price": "From 2k€",
+    "duration": "(2 to 4 days)",
+    "features": [
+      "Review of your current data, tools, workflows and usage",
+      "Identification of high-impact data / AI opportunities",
+      "Use case prioritization based on ROI, feasibility and risk",
+      "Technical and organizational recommendations",
+      "Clear action plan with quick wins and longer-term initiatives"
+    ]
+  },
+  {
+    "name": "AI MVP",
+    "subtitle": "A first version that actually works.",
+    "description": "Designed to launch a concrete use case quickly with a solid, demonstrable and usable foundation.",
+    "price": "From 15k€",
+    "duration": "(4 weeks)",
+    "features": [
+      "Modeling, agent design or automation for a focused use case",
+      "GPT API integration and tool calling",
+      "Minimum viable pipeline from data to inference",
+      "Basic monitoring, logs and initial supervision",
+      "Documentation and handover to internal teams"
+    ]
+  },
+  {
+    "name": "Continuous Delivery",
+    "subtitle": "Deploy your product or service at scale.",
+    "description": "Built for teams moving from a validated prototype to a robust, production-ready AI service.",
+    "price": "From 30k€",
+    "duration": "(6 to 8 weeks)",
+    "features": [
+      "Production-grade MLOps and LLMOps",
+      "On-premise or cloud deployment",
+      "Operational, monitored AI service",
+      "Security, observability and runtime stability",
+      "Progressive scale-up and delivery support"
+    ]
+  },
+  {
+    "name": "Custom Data & AI Projects",
+    "subtitle": "From strategy to production.",
+    "description": "For companies looking to design, build and deploy robust and measurable data / AI systems.",
+    "price": "Quote on request",
+    "duration": "",
+    "features": [
+      "Use case design and scoping",
+      "Data engineering, architecture, pipelines, orchestration and governance",
+      "ML / AI models, including classical ML and LLM systems",
+      "Production deployment and industrialization",
+      "Team enablement and knowledge transfer"
+    ]
+  }
+]
