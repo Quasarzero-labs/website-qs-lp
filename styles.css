@@ -1111,6 +1111,40 @@ h2 {
   color: #111;
 }
 
+.section-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.section-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 32px;
+  border-radius: 999px;
+  background: #070707;
+  color: #f7f7f7;
+  font-weight: 500;
+  font-size: 1.02rem;
+  transition: opacity 200ms ease;
+}
+
+.section-cta a::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .section-cta a:hover {
+    opacity: 0.78;
+  }
+}
+
 .site-footer {
   margin-top: 18px;
   padding: 22px 28px 18px;

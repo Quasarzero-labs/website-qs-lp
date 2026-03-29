@@ -9,7 +9,6 @@ const toggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelectorAll(".site-nav a");
 const pricingGrid = document.querySelector("#pricing-grid");
 const internalLinks = document.querySelectorAll('a[href^="#"]');
-const caseStudiesSection = document.querySelector(".case-studies");
 const caseTrack = document.querySelector(".case-track");
 const caseGrid = document.querySelector(".case-grid");
 const caseScrollbar = document.querySelector("#case-scrollbar");
@@ -65,34 +64,59 @@ function createPricingCard(offer, featured) {
   const article = document.createElement("article");
   article.className = `pricing-card reveal${featured ? " pricing-card-featured" : ""}`;
 
-  const items = offer.features
-    .map((feature) => `<li>${feature}</li>`)
-    .join("");
+  const kicker = document.createElement("p");
+  kicker.className = "pricing-kicker";
+  kicker.textContent = offer.name;
 
-  let formattedPrice = `<span class="price-value">${offer.price}</span>`;
+  const title = document.createElement("h3");
+  title.textContent = offer.subtitle;
 
-  if (offer.price.startsWith("Dès ")) {
-    formattedPrice = `<span class="price-prefix">Dès</span><span class="price-value">${offer.price.replace("Dès ", "")}</span>`;
+  const desc = document.createElement("p");
+  desc.className = "pricing-text";
+  desc.textContent = offer.description;
+
+  const priceBlock = document.createElement("div");
+  priceBlock.className = "price-block";
+
+  const priceSpan = document.createElement("span");
+  priceSpan.className = "price";
+
+  const raw = offer.price;
+  const prefixMap = { "Dès ": "Dès", "From ": "From" };
+  const matchedPrefix = Object.keys(prefixMap).find((p) => raw.startsWith(p));
+  if (matchedPrefix) {
+    const prefixEl = document.createElement("span");
+    prefixEl.className = "price-prefix";
+    prefixEl.textContent = prefixMap[matchedPrefix];
+    const valueEl = document.createElement("span");
+    valueEl.className = "price-value";
+    valueEl.textContent = raw.slice(matchedPrefix.length);
+    priceSpan.append(prefixEl, valueEl);
+  } else {
+    const valueEl = document.createElement("span");
+    valueEl.className = "price-value";
+    valueEl.textContent = raw;
+    priceSpan.append(valueEl);
   }
 
-  if (offer.price.startsWith("From ")) {
-    formattedPrice = `<span class="price-prefix">From</span><span class="price-value">${offer.price.replace("From ", "")}</span>`;
-  }
+  const durationSpan = document.createElement("span");
+  durationSpan.className = "price-note-inline";
+  durationSpan.textContent = offer.duration || "";
 
-  const includedLabel = locale.startsWith("en") ? "Included" : "Inclus";
+  priceBlock.append(priceSpan, durationSpan);
 
-  article.innerHTML = `
-    <p class="pricing-kicker">${offer.name}</p>
-    <h3>${offer.subtitle}</h3>
-    <p class="pricing-text">${offer.description}</p>
-    <div class="price-block">
-      <span class="price">${formattedPrice}</span>
-      <span class="price-note-inline">${offer.duration || ""}</span>
-    </div>
-    <span class="pricing-badge">${includedLabel}</span>
-    <ul>${items}</ul>
-  `;
+  const badge = document.createElement("span");
+  badge.className = "pricing-badge";
+  badge.textContent = locale.startsWith("en") ? "Included" : "Inclus";
 
+  const ul = document.createElement("ul");
+  offer.features.forEach((feature) => {
+    const li = document.createElement("li");
+    li.textContent = feature;
+    ul.append(li);
+  });
+
+  article.append(kicker, title, desc, priceBlock, badge, ul);
   return article;
 }
 
