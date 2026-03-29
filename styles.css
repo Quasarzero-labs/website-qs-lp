@@ -1219,7 +1219,6 @@ h2 {
   .method .section-heading,
   .pricing .section-heading,
   .section-heading,
-  .pricing-grid,
   .card {
     grid-template-columns: 1fr;
   }
@@ -1236,10 +1235,6 @@ h2 {
   .case-card-featured {
     width: min(84vw, 440px);
     min-height: auto;
-  }
-
-  .about-team {
-    grid-template-columns: 1fr;
   }
 
   .step {
@@ -1287,8 +1282,11 @@ h2 {
   }
 
   .site-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     padding-top: 18px;
+    background: rgba(232, 232, 232, 0.96);
+    backdrop-filter: blur(12px);
   }
 
   .nav-toggle {
@@ -1358,6 +1356,23 @@ h2 {
   .panel-grid,
   .step {
     grid-template-columns: 1fr;
+  }
+
+  .step p {
+    grid-column: auto;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-team {
+    grid-template-columns: 1fr;
+  }
+
+  .case-card,
+  .case-card-featured {
+    width: min(88vw, 360px);
   }
 
   .about-copy-block p {
