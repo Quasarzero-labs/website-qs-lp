@@ -432,6 +432,7 @@ function initCaseStudiesMotion() {
     const card = caseGrid.querySelector(".case-card");
     const step = card ? card.offsetWidth + 18 : 360;
     caseTrack.scrollLeft += dir * step;
+    syncScrollbarFromTrack();
   };
 
   syncScrollbarFromTrack();

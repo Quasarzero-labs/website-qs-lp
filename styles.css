@@ -744,7 +744,7 @@ a {
 }
 
 .case-scrollbar-input {
-  flex: 1;
+  width: 100%;
   appearance: none;
   background: transparent;
 }
