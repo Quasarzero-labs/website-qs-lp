@@ -520,7 +520,6 @@ a {
   padding-bottom: 8px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  scroll-behavior: smooth;
 }
 
 .case-track::-webkit-scrollbar {

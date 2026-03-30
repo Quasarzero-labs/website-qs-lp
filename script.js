@@ -438,12 +438,12 @@ function initCaseStudiesMotion() {
   // arrows → track (scrollbar follows via scroll event)
   if (caseArrowPrev) {
     caseArrowPrev.addEventListener("click", () => {
-      caseTrack.scrollLeft -= caseTrack.clientWidth * 0.75;
+      caseTrack.scrollTo({ left: caseTrack.scrollLeft - caseTrack.clientWidth * 0.75, behavior: "smooth" });
     });
   }
   if (caseArrowNext) {
     caseArrowNext.addEventListener("click", () => {
-      caseTrack.scrollLeft += caseTrack.clientWidth * 0.75;
+      caseTrack.scrollTo({ left: caseTrack.scrollLeft + caseTrack.clientWidth * 0.75, behavior: "smooth" });
     });
   }
 
