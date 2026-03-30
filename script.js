@@ -181,6 +181,126 @@ function initHeroMotion() {
   });
 }
 
+function initHeroCanvas() {
+  if (window.matchMedia("(max-width: 760px)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const heroCopy = document.querySelector(".hero-copy");
+  if (!heroCopy) return;
+
+  const canvas = document.createElement("canvas");
+  canvas.className = "hero-canvas";
+  heroCopy.prepend(canvas);
+
+  const ctx = canvas.getContext("2d");
+  let rafId = null;
+  let active = true;
+  let prev = 0;
+
+  function resize() {
+    canvas.width = heroCopy.offsetWidth;
+    canvas.height = heroCopy.offsetHeight;
+    trees = [];
+    spawnTree();
+    spawnTree();
+  }
+
+  function sampleK() {
+    const r = Math.random();
+    if (r < 0.20) return 0;
+    if (r < 0.62) return 1;
+    if (r < 0.90) return 2;
+    return 3;
+  }
+
+  function buildTree() {
+    const MAX_GEN = 7;
+    const ox = canvas.width * (0.08 + Math.random() * 0.74);
+    const oy = canvas.height * (0.82 + Math.random() * 0.14);
+    const edges = [];
+
+    function branch(x, y, angle, gen) {
+      if (gen >= MAX_GEN || edges.length > 150) return;
+      const k = sampleK();
+      for (let i = 0; i < k; i++) {
+        const spread = Math.max(0.28, 0.82 - gen * 0.07);
+        const a = angle + (Math.random() - 0.5) * spread;
+        const len = canvas.height * 0.09 * Math.pow(0.68, gen) * (0.7 + Math.random() * 0.6);
+        const nx = x + Math.cos(a) * len;
+        const ny = y + Math.sin(a) * len;
+        edges.push({ x0: x, y0: y, x1: nx, y1: ny, gen });
+        branch(nx, ny, a, gen + 1);
+      }
+    }
+
+    branch(ox, oy, -Math.PI / 2 + (Math.random() - 0.5) * 0.28, 0);
+    const maxGen = edges.length ? Math.max(...edges.map((e) => e.gen)) : 0;
+    return { edges, maxGen, progress: 0, fadeOut: 1 };
+  }
+
+  let trees = [];
+
+  function spawnTree() {
+    trees.push(buildTree());
+  }
+
+  const GROW = 0.00032;
+  const FADE = 0.00055;
+
+  function tick(ts) {
+    if (!active) return;
+    const dt = Math.min(ts - prev, 50);
+    prev = ts;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    trees = trees.filter((t) => t.fadeOut > 0);
+
+    for (const tree of trees) {
+      if (tree.progress < 1) {
+        tree.progress = Math.min(1, tree.progress + GROW * dt);
+      } else {
+        tree.fadeOut = Math.max(0, tree.fadeOut - FADE * dt);
+      }
+
+      const span = (tree.maxGen + 1) || 1;
+      for (const e of tree.edges) {
+        const p = Math.max(0, Math.min(1, (tree.progress - e.gen / span) / (1 / span)));
+        if (p <= 0) continue;
+        ctx.globalAlpha = 0.11 * (1 - (e.gen / span) * 0.55) * tree.fadeOut;
+        ctx.lineWidth = Math.max(0.4, 1.5 - e.gen * 0.17);
+        ctx.strokeStyle = "#111";
+        ctx.beginPath();
+        ctx.moveTo(e.x0, e.y0);
+        ctx.lineTo(e.x0 + (e.x1 - e.x0) * p, e.y0 + (e.y1 - e.y0) * p);
+        ctx.stroke();
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    if (trees.length < 2) spawnTree();
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  resize();
+  window.addEventListener("resize", resize, { passive: true });
+  rafId = requestAnimationFrame(tick);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      active = entries[0].isIntersecting;
+      if (active) {
+        prev = performance.now();
+        rafId = requestAnimationFrame(tick);
+      } else {
+        cancelAnimationFrame(rafId);
+      }
+    },
+    { threshold: 0 }
+  );
+  observer.observe(heroCopy);
+}
+
 function initRevealAnimations() {
   const revealItems = gsap.utils.toArray(".reveal");
 
@@ -306,6 +426,7 @@ function initCaseStudiesMotion() {
 }
 
 initHeroMotion();
+initHeroCanvas();
 initRevealAnimations();
 initFooterMotion();
 initCaseStudiesMotion();
