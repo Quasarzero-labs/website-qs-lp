@@ -438,14 +438,12 @@ function initCaseStudiesMotion() {
   // arrows → track (scrollbar follows via scroll event)
   if (caseArrowPrev) {
     caseArrowPrev.addEventListener("click", () => {
-      const card = caseGrid.querySelector(".case-card");
-      caseTrack.scrollLeft -= card ? card.offsetWidth + 18 : 360;
+      caseTrack.scrollLeft -= caseTrack.clientWidth * 0.75;
     });
   }
   if (caseArrowNext) {
     caseArrowNext.addEventListener("click", () => {
-      const card = caseGrid.querySelector(".case-card");
-      caseTrack.scrollLeft += card ? card.offsetWidth + 18 : 360;
+      caseTrack.scrollLeft += caseTrack.clientWidth * 0.75;
     });
   }
 

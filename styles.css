@@ -520,6 +520,7 @@ a {
   padding-bottom: 8px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 .case-track::-webkit-scrollbar {
@@ -1450,6 +1451,10 @@ h2 {
   .case-studies {
     padding: 28px 22px 24px;
     border-radius: 28px;
+  }
+
+  .case-arrow {
+    display: none;
   }
 
   .method-grid {
