@@ -251,6 +251,7 @@ a {
 .hero-prefix,
 .hero-main {
   display: inline-block;
+  vertical-align: bottom;
 }
 
 .hero-prefix {

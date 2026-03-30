@@ -154,7 +154,7 @@ function initHeroMotion() {
   gsap
     .timeline({ defaults: { ease: "power3.out" } })
     .to(heroKicker, { autoAlpha: 1, y: 0, duration: 0.55 })
-    .to(heroTitle, { autoAlpha: 1, y: 0, duration: 0.9 }, "-=0.2")
+    .to(heroTitle, { autoAlpha: 1, y: 0, duration: 0.9, clearProps: "y" }, "-=0.2")
     .to(stats, { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.65 }, "-=0.4")
     .to(heroText, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.35");
 
@@ -272,7 +272,10 @@ function initFooterMotion() {
 function initCaseStudiesMotion() {
   if (!caseTrack || !caseGrid || !caseScrollbar) return;
 
+  let isScrollbarActive = false;
+
   const syncScrollbarFromTrack = () => {
+    if (isScrollbarActive) return;
     const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
     if (maxScroll <= 0) {
       caseScrollbar.value = "0";
@@ -290,14 +293,14 @@ function initCaseStudiesMotion() {
     if (maxScroll <= 0) return;
 
     const ratio = Number(caseScrollbar.value) / 100;
-    caseTrack.scrollTo({
-      left: ratio * maxScroll,
-      behavior: "smooth",
-    });
+    caseTrack.scrollLeft = ratio * maxScroll;
   };
 
   syncScrollbarFromTrack();
   caseTrack.addEventListener("scroll", syncScrollbarFromTrack, { passive: true });
+  caseScrollbar.addEventListener("pointerdown", () => { isScrollbarActive = true; });
+  caseScrollbar.addEventListener("pointerup", () => { isScrollbarActive = false; });
+  caseScrollbar.addEventListener("pointercancel", () => { isScrollbarActive = false; });
   caseScrollbar.addEventListener("input", syncTrackFromScrollbar);
   window.addEventListener("resize", syncScrollbarFromTrack);
 }
