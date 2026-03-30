@@ -706,33 +706,50 @@ a {
   color: #ffffff;
 }
 
-.case-scrollbar {
-  display: grid;
-  gap: 10px;
+.case-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-top: 18px;
 }
 
-.case-scrollbar-label {
-  color: var(--muted);
-  font-size: 0.92rem;
+.case-arrow {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: var(--text);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.18s;
+  line-height: 0;
+}
+
+.case-arrow:hover {
+  opacity: 1;
+}
+
+.case-arrow:disabled {
+  opacity: 0.18;
+  cursor: default;
 }
 
 .case-scrollbar-input {
-  width: 100%;
+  flex: 1;
   appearance: none;
   background: transparent;
 }
 
 .case-scrollbar-input::-webkit-slider-runnable-track {
-  height: 6px;
+  height: 4px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .case-scrollbar-input::-webkit-slider-thumb {
   appearance: none;
   width: 22%;
-  height: 14px;
+  height: 12px;
   margin-top: -4px;
   border: 0;
   border-radius: 999px;
@@ -741,14 +758,14 @@ a {
 }
 
 .case-scrollbar-input::-moz-range-track {
-  height: 6px;
+  height: 4px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .case-scrollbar-input::-moz-range-thumb {
   width: 22%;
-  height: 14px;
+  height: 12px;
   border: 0;
   border-radius: 999px;
   background: #151515;

@@ -12,6 +12,8 @@ const internalLinks = document.querySelectorAll('a[href^="#"]');
 const caseTrack = document.querySelector(".case-track");
 const caseGrid = document.querySelector(".case-grid");
 const caseScrollbar = document.querySelector("#case-scrollbar");
+const caseArrowPrev = document.querySelector(".case-arrow-prev");
+const caseArrowNext = document.querySelector(".case-arrow-next");
 const locale = pricingGrid?.dataset.locale || document.documentElement.lang || "fr";
 
 const lenis = new Lenis({
@@ -397,6 +399,13 @@ function initCaseStudiesMotion() {
 
   let isScrollbarActive = false;
 
+  const updateArrows = () => {
+    if (!caseArrowPrev || !caseArrowNext) return;
+    const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
+    caseArrowPrev.disabled = caseTrack.scrollLeft <= 0;
+    caseArrowNext.disabled = caseTrack.scrollLeft >= maxScroll - 1;
+  };
+
   const syncScrollbarFromTrack = () => {
     if (isScrollbarActive) return;
     const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
@@ -405,18 +414,24 @@ function initCaseStudiesMotion() {
       caseScrollbar.disabled = true;
       return;
     }
-
     caseScrollbar.disabled = false;
     const ratio = (caseTrack.scrollLeft / maxScroll) * 100;
     caseScrollbar.value = String(Math.round(ratio));
+    updateArrows();
   };
 
   const syncTrackFromScrollbar = () => {
     const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
     if (maxScroll <= 0) return;
-
     const ratio = Number(caseScrollbar.value) / 100;
     caseTrack.scrollLeft = ratio * maxScroll;
+    updateArrows();
+  };
+
+  const scrollByCard = (dir) => {
+    const card = caseGrid.querySelector(".case-card");
+    const step = card ? card.offsetWidth + 18 : 360;
+    caseTrack.scrollLeft += dir * step;
   };
 
   syncScrollbarFromTrack();
@@ -426,6 +441,9 @@ function initCaseStudiesMotion() {
   caseScrollbar.addEventListener("pointercancel", () => { isScrollbarActive = false; });
   caseScrollbar.addEventListener("input", syncTrackFromScrollbar);
   window.addEventListener("resize", syncScrollbarFromTrack);
+
+  if (caseArrowPrev) caseArrowPrev.addEventListener("click", () => scrollByCard(-1));
+  if (caseArrowNext) caseArrowNext.addEventListener("click", () => scrollByCard(1));
 }
 
 initHeroMotion();
