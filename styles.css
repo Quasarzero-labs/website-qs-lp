@@ -1212,6 +1212,27 @@ h2 {
   letter-spacing: -0.06em;
 }
 
+.footer-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .footer-linkedin:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+}
+
 .footer-response {
   color: rgba(255, 255, 255, 0.56);
   font-size: 0.92rem;
