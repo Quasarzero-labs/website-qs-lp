@@ -24,6 +24,33 @@
     <meta name="twitter:description" content="QuasarZero conçoit et déploie des solutions data et IA robustes." />
     <meta name="twitter:image" content="https://www.quasarzero.fr/assets/og.svg" />
     <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "QuasarZero",
+      "url": "https://www.quasarzero.fr",
+      "logo": "https://www.quasarzero.fr/favicon.svg",
+      "email": "team.analytics@quasarzero.fr",
+      "description": "Studio data et IA spécialisé en Data Engineering, AI Engineering, Data Science et ML.",
+      "sameAs": ["https://www.linkedin.com/company/quasarzero/"],
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Hermann Djophant",
+          "jobTitle": "Data Science & Strategy",
+          "sameAs": "https://www.linkedin.com/in/hermann-d-049714a2/"
+        },
+        {
+          "@type": "Person",
+          "name": "Elhadji Gagny",
+          "jobTitle": "ML Engineer",
+          "sameAs": "https://www.linkedin.com/in/elgasy/"
+        }
+      ],
+      "knowsAbout": ["Data Engineering", "Machine Learning", "Artificial Intelligence", "Data Science", "MLOps", "LLM"]
+    }
+    </script>
   </head>
   <body>
     <div class="page-shell">
@@ -115,11 +142,17 @@
           <div class="about-team">
             <article class="team-card reveal">
               <div class="team-photo-wrap">
-                <img
-                  class="team-photo team-photo-hermann"
-                  src="assets/hermann.JPG"
-                  alt="Portrait de Hermann Djophant"
-                />
+                <picture>
+                  <source srcset="assets/hermann.webp" type="image/webp" />
+                  <img
+                    class="team-photo team-photo-hermann"
+                    src="assets/hermann-sm.jpg"
+                    alt="Portrait de Hermann Djophant"
+                    width="312"
+                    height="312"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
               <h3>Hermann Djophant</h3>
               <p class="team-role">Data Science & Strategy</p>
@@ -137,11 +170,17 @@
 
             <article class="team-card reveal">
               <div class="team-photo-wrap">
-                <img
-                  class="team-photo team-photo-elhadji"
-                  src="assets/elhadji.jpg"
-                  alt="Portrait de Elhadji Gagny"
-                />
+                <picture>
+                  <source srcset="assets/elhadji.webp" type="image/webp" />
+                  <img
+                    class="team-photo team-photo-elhadji"
+                    src="assets/elhadji-sm.jpg"
+                    alt="Portrait de Elhadji Gagny"
+                    width="312"
+                    height="312"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
               <h3>Elhadji Gagny</h3>
               <p class="team-role">ML Engineer</p>

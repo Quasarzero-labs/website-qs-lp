@@ -892,6 +892,10 @@ a {
     border-color 220ms ease;
 }
 
+.team-photo-wrap picture {
+  display: contents;
+}
+
 .team-photo-wrap {
   width: 156px;
   height: 156px;
