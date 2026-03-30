@@ -198,8 +198,10 @@ function initHeroCanvas() {
   let prev = 0;
 
   function resize() {
-    canvas.width = heroCopy.offsetWidth;
-    canvas.height = heroCopy.offsetHeight;
+    const w = heroCopy.offsetWidth || window.innerWidth * 0.65;
+    const h = heroCopy.offsetHeight || window.innerHeight * 0.38;
+    canvas.width = Math.round(w);
+    canvas.height = Math.round(h);
     trees = [];
     spawnTree();
     spawnTree();
@@ -225,7 +227,7 @@ function initHeroCanvas() {
       for (let i = 0; i < k; i++) {
         const spread = Math.max(0.28, 0.82 - gen * 0.07);
         const a = angle + (Math.random() - 0.5) * spread;
-        const len = canvas.height * 0.09 * Math.pow(0.68, gen) * (0.7 + Math.random() * 0.6);
+        const len = canvas.height * 0.15 * Math.pow(0.70, gen) * (0.7 + Math.random() * 0.6);
         const nx = x + Math.cos(a) * len;
         const ny = y + Math.sin(a) * len;
         edges.push({ x0: x, y0: y, x1: nx, y1: ny, gen });
@@ -266,7 +268,7 @@ function initHeroCanvas() {
       for (const e of tree.edges) {
         const p = Math.max(0, Math.min(1, (tree.progress - e.gen / span) / (1 / span)));
         if (p <= 0) continue;
-        ctx.globalAlpha = 0.11 * (1 - (e.gen / span) * 0.55) * tree.fadeOut;
+        ctx.globalAlpha = 0.28 * (1 - (e.gen / span) * 0.5) * tree.fadeOut;
         ctx.lineWidth = Math.max(0.4, 1.5 - e.gen * 0.17);
         ctx.strokeStyle = "#111";
         ctx.beginPath();
@@ -283,6 +285,7 @@ function initHeroCanvas() {
   }
 
   resize();
+  document.fonts.ready.then(resize);
   window.addEventListener("resize", resize, { passive: true });
   rafId = requestAnimationFrame(tick);
 
