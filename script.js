@@ -397,54 +397,60 @@ function initFooterMotion() {
 function initCaseStudiesMotion() {
   if (!caseTrack || !caseGrid || !caseScrollbar) return;
 
-  let isScrollbarActive = false;
+  let draggingScrollbar = false;
 
-  const updateArrows = () => {
-    if (!caseArrowPrev || !caseArrowNext) return;
-    const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
-    caseArrowPrev.disabled = caseTrack.scrollLeft <= 0;
-    caseArrowNext.disabled = caseTrack.scrollLeft >= maxScroll - 1;
-  };
+  const getMax = () => caseTrack.scrollWidth - caseTrack.clientWidth;
 
-  const syncScrollbarFromTrack = () => {
-    if (isScrollbarActive) return;
-    const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
-    if (maxScroll <= 0) {
+  const syncAll = () => {
+    const max = getMax();
+    if (max <= 0) {
       caseScrollbar.value = "0";
       caseScrollbar.disabled = true;
+      if (caseArrowPrev) caseArrowPrev.disabled = true;
+      if (caseArrowNext) caseArrowNext.disabled = true;
       return;
     }
     caseScrollbar.disabled = false;
-    const ratio = (caseTrack.scrollLeft / maxScroll) * 100;
-    caseScrollbar.value = String(Math.round(ratio));
-    updateArrows();
+    const pos = caseTrack.scrollLeft;
+    caseScrollbar.value = String(Math.round((pos / max) * 100));
+    if (caseArrowPrev) caseArrowPrev.disabled = pos <= 0;
+    if (caseArrowNext) caseArrowNext.disabled = pos >= max - 1;
   };
 
-  const syncTrackFromScrollbar = () => {
-    const maxScroll = caseTrack.scrollWidth - caseTrack.clientWidth;
-    if (maxScroll <= 0) return;
-    const ratio = Number(caseScrollbar.value) / 100;
-    caseTrack.scrollLeft = ratio * maxScroll;
-    updateArrows();
-  };
+  // track → scrollbar + arrows (skip while user drags the scrollbar thumb)
+  caseTrack.addEventListener("scroll", () => {
+    if (!draggingScrollbar) syncAll();
+  }, { passive: true });
 
-  const scrollByCard = (dir) => {
-    const card = caseGrid.querySelector(".case-card");
-    const step = card ? card.offsetWidth + 18 : 360;
-    caseTrack.scrollLeft += dir * step;
-    syncScrollbarFromTrack();
-  };
+  // scrollbar → track + arrows
+  caseScrollbar.addEventListener("input", () => {
+    const max = getMax();
+    if (max <= 0) return;
+    caseTrack.scrollLeft = (Number(caseScrollbar.value) / 100) * max;
+    if (caseArrowPrev) caseArrowPrev.disabled = caseTrack.scrollLeft <= 0;
+    if (caseArrowNext) caseArrowNext.disabled = caseTrack.scrollLeft >= max - 1;
+  });
 
-  syncScrollbarFromTrack();
-  caseTrack.addEventListener("scroll", syncScrollbarFromTrack, { passive: true });
-  caseScrollbar.addEventListener("pointerdown", () => { isScrollbarActive = true; });
-  caseScrollbar.addEventListener("pointerup", () => { isScrollbarActive = false; });
-  caseScrollbar.addEventListener("pointercancel", () => { isScrollbarActive = false; });
-  caseScrollbar.addEventListener("input", syncTrackFromScrollbar);
-  window.addEventListener("resize", syncScrollbarFromTrack);
+  caseScrollbar.addEventListener("pointerdown", () => { draggingScrollbar = true; });
+  caseScrollbar.addEventListener("pointerup",   () => { draggingScrollbar = false; syncAll(); });
+  caseScrollbar.addEventListener("pointercancel", () => { draggingScrollbar = false; });
 
-  if (caseArrowPrev) caseArrowPrev.addEventListener("click", () => scrollByCard(-1));
-  if (caseArrowNext) caseArrowNext.addEventListener("click", () => scrollByCard(1));
+  // arrows → track (scrollbar follows via scroll event)
+  if (caseArrowPrev) {
+    caseArrowPrev.addEventListener("click", () => {
+      const card = caseGrid.querySelector(".case-card");
+      caseTrack.scrollLeft -= card ? card.offsetWidth + 18 : 360;
+    });
+  }
+  if (caseArrowNext) {
+    caseArrowNext.addEventListener("click", () => {
+      const card = caseGrid.querySelector(".case-card");
+      caseTrack.scrollLeft += card ? card.offsetWidth + 18 : 360;
+    });
+  }
+
+  window.addEventListener("resize", syncAll);
+  syncAll();
 }
 
 initHeroMotion();

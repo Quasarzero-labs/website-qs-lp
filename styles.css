@@ -744,7 +744,9 @@ a {
 }
 
 .case-scrollbar-input {
+  display: block;
   width: 100%;
+  box-sizing: border-box;
   appearance: none;
   background: transparent;
 }
