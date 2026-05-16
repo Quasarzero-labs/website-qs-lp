@@ -2,17 +2,17 @@
    VARIABLES
    ===================== */
 :root {
-  --green:        #0c2b1f;
-  --green-mid:    #143828;
+  --green:        #0a0a0e;
+  --green-mid:    #111116;
   --cream:        #ede8db;
   --cream-dark:   #e4dece;
   --terracotta:   #c4602a;
   --text-on-dark: #e2ddd0;
-  --text-on-dark-muted: rgba(226, 221, 208, 0.55);
-  --text-on-light: #0c2b1f;
-  --text-on-light-muted: rgba(12, 43, 31, 0.5);
-  --rule-dark:    rgba(226, 221, 208, 0.14);
-  --rule-light:   rgba(12, 43, 31, 0.12);
+  --text-on-dark-muted: rgba(226, 221, 208, 0.5);
+  --text-on-light: #111116;
+  --text-on-light-muted: rgba(17, 17, 22, 0.45);
+  --rule-dark:    rgba(226, 221, 208, 0.1);
+  --rule-light:   rgba(17, 17, 22, 0.1);
   --font-display: 'Space Grotesk', -apple-system, sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
   --font-sans:    'Inter', -apple-system, sans-serif;
