@@ -229,6 +229,42 @@ section { padding: 96px 0; }
 }
 
 /* =====================
+   HERO VISUAL
+   ===================== */
+.hero__visual-inline {
+  margin: 48px 0 56px;
+}
+.hero__screen-wrap {
+  position:      relative;
+  border-radius: 6px 6px 0 0;
+  overflow:      hidden;
+  border:        1px solid rgba(226, 221, 208, 0.08);
+  border-bottom: none;
+  background:    #0d0d12;
+  /* browser chrome bar */
+}
+.hero__screen-wrap::before {
+  content:        '';
+  display:        block;
+  height:         28px;
+  background:     #1a1a22;
+  border-bottom:  1px solid rgba(255,255,255,0.06);
+  background-image: radial-gradient(circle at 14px 14px, #ff5f57 4px, transparent 4px),
+                    radial-gradient(circle at 28px 14px, #febc2e 4px, transparent 4px),
+                    radial-gradient(circle at 42px 14px, #28c840 4px, transparent 4px);
+  background-repeat: no-repeat;
+}
+.hero__screen {
+  width:      100%;
+  height:     auto;
+  display:    block;
+  opacity:    0.92;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* =====================
    PROBLEM
    ===================== */
 .split {
