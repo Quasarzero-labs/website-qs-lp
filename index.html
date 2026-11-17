@@ -8,6 +8,11 @@
   <meta property="og:title" content="QuasarZero — Data & AI studio">
   <meta property="og:description" content="AI systems you own, built inside your boundary. It starts with a 1–3 day audit.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.quasarzero.fr/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="QuasarZero logo and headline: Custom AI systems, built inside your company. Yours to keep.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://www.quasarzero.fr/">
   <link rel="alternate" hreflang="en" href="https://www.quasarzero.fr/">
   <link rel="alternate" hreflang="fr" href="https://www.quasarzero.fr/fr/">
@@ -28,10 +33,10 @@
   <header class="nav" id="nav">
     <div class="wrap nav__inner">
       <a href="#top" class="logo" aria-label="QuasarZero, home">
-        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
-          <ellipse cx="16" cy="16" rx="14.5" ry="4.4" transform="rotate(-24 16 16)" fill="none" stroke="currentColor" stroke-width="1.3"/>
-          <circle class="logo__zero" cx="16" cy="16" r="6.6" stroke="currentColor" stroke-width="2.2"/>
-          <path class="logo__arc" d="M1.5 16 A14.5 4.4 0 0 0 30.5 16" transform="rotate(-24 16 16)" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true">
+          <!-- An Einstein cross: one quasar seen four times around the ring of a lensing galaxy -->
+          <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="19.9 9.08 21.64 10.47 22.34 7.68 21.64 11.87 1.05 0"/>
+          <path class="logo__images" d="M46.59 25.16a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM35.64 50.79a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0-6.4 0ZM9.41 38.84a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0ZM22.56 13.21a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z"/>
         </svg>
         <span>QuasarZero</span>
       </a>
@@ -103,7 +108,7 @@
             <button type="button" class="chip is-on" aria-pressed="true"
               data-name="Frontier model" data-note="Claude or GPT, through your enterprise tenant">Frontier</button>
             <button type="button" class="chip" aria-pressed="false"
-              data-name="Open-weight model" data-note="Self-hosted on your cloud or your servers">Open-weight</button>
+              data-name="Open-source model" data-note="Self-hosted on your cloud or your servers">Open source</button>
             <button type="button" class="chip" aria-pressed="false"
               data-name="Fine-tuned model" data-note="Trained on your method and vocabulary, hosted with you">Fine-tuned</button>
           </div>
@@ -240,7 +245,7 @@
               <h3>Check that 80% means 80%</h3>
               <p class="mcard__eq">P(low ≤ y ≤ high) = 0.80, then counted</p>
               <p>A band is only worth its coverage. On assets the model never saw, we count how often reality fell inside, and show the figure whatever it is.</p>
-              <p class="mcard__note">Above: announced coverage against observed coverage. On the diagonal, the model is calibrated.</p>
+              <p class="mcard__note">Above: how often reality fell inside the 80% band. Thin line: each batch of 16 unseen assets, which wanders. Orange line: everything counted so far, which settles. Rings: the forecasts shown in the middle plot, a triangle when below 60%.</p>
             </div>
           </article>
         </div>
@@ -334,7 +339,7 @@
         </header>
         <ul class="guarantees">
           <li class="reveal"><h3>In your environment</h3><p>Deployed in your cloud tenant or on your servers, hosted where you require.</p></li>
-          <li class="reveal"><h3>Models with you</h3><p>Open-weight models can be fine-tuned and self-hosted, so no data goes to a third party.</p></li>
+          <li class="reveal"><h3>Models with you</h3><p>Open-source models can be fine-tuned and self-hosted, so no data goes to a third party.</p></li>
           <li class="reveal"><h3>Zero reuse</h3><p>Your data never trains third-party models or serves another client.</p></li>
           <li class="reveal"><h3>Access rights respected</h3><p>Role-based control and row-level security: the AI never returns more than a user's rights allow.</p></li>
           <li class="reveal"><h3>Full traceability</h3><p>Data lineage and audit logs. Every result can be justified back to its source.</p></li>
@@ -365,13 +370,6 @@
             <p>Formerly at TotalEnergies Digital Factory on 100+ industrial anomaly-detection models; tech lead at Lengo AI; forecasting in production at Engie. Teaches cloud at EPITA.</p>
             <p class="person__edu">MSc Applied Mathematics (Sorbonne) · Data Science engineer (ISUP)</p>
           </li>
-          <li class="person reveal">
-            <span class="person__mono" aria-hidden="true">SN</span>
-            <h3>Seydou Niang</h3>
-            <p class="person__role">Tech lead · Data science &amp; AI</p>
-            <p>Formerly AI lead at Expleo Group (NLP, generative AI, deep learning) for automotive and aerospace clients; predictive maintenance and stock optimisation at TNP Consultants. Co-founded an AI training centre.</p>
-            <p class="person__edu">Engineer, ENSAI Rennes · AWS certified</p>
-          </li>
         </ul>
       </div>
     </section>
@@ -390,7 +388,7 @@
           </details>
           <details>
             <summary>Do you always fine-tune and self-host models?</summary>
-            <p>No. Our architectures are independent of the model provider. We use the model that fits: one already available in your enterprise environment, or an open-weight model hosted with you when confidentiality, precision or cost call for it.</p>
+            <p>No. Our architectures are independent of the model provider. We use the model that fits: one already available in your enterprise environment, or an open-source model hosted with you when confidentiality, precision or cost call for it.</p>
           </details>
           <details>
             <summary>What do we get from the 1–3 day audit?</summary>
@@ -424,6 +422,7 @@
     <div class="wrap footer__inner">
       <span>© 2026 QuasarZero</span>
       <span>Dakar · Paris · Seattle</span>
+      <a href="legal/">Legal notice</a>
       <a class="footer__lang" href="fr/" hreflang="fr" lang="fr">Français</a>
       <a href="#top">Back to top</a>
     </div>

@@ -8,6 +8,11 @@
   <meta property="og:title" content="QuasarZero — Studio Data & IA">
   <meta property="og:description" content="Des systèmes d'IA qui vous appartiennent, construits dans votre périmètre. Tout commence par un audit de 1 à 3 jours.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.quasarzero.fr/og-fr.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo et titre de QuasarZero : des systèmes d’IA sur mesure, construits chez vous. Ils vous appartiennent.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://www.quasarzero.fr/fr/">
   <link rel="alternate" hreflang="en" href="https://www.quasarzero.fr/">
   <link rel="alternate" hreflang="fr" href="https://www.quasarzero.fr/fr/">
@@ -28,10 +33,10 @@
   <header class="nav" id="nav">
     <div class="wrap nav__inner">
       <a href="#top" class="logo" aria-label="QuasarZero, accueil">
-        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
-          <ellipse cx="16" cy="16" rx="14.5" ry="4.4" transform="rotate(-24 16 16)" fill="none" stroke="currentColor" stroke-width="1.3"/>
-          <circle class="logo__zero" cx="16" cy="16" r="6.6" stroke="currentColor" stroke-width="2.2"/>
-          <path class="logo__arc" d="M1.5 16 A14.5 4.4 0 0 0 30.5 16" transform="rotate(-24 16 16)" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true">
+          <!-- An Einstein cross: one quasar seen four times around the ring of a lensing galaxy -->
+          <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="19.9 9.08 21.64 10.47 22.34 7.68 21.64 11.87 1.05 0"/>
+          <path class="logo__images" d="M46.59 25.16a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM35.64 50.79a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0-6.4 0ZM9.41 38.84a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0ZM22.56 13.21a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z"/>
         </svg>
         <span>QuasarZero</span>
       </a>
@@ -85,7 +90,7 @@
               </li>
               <li class="flow__node flow__node--slot" id="slot" aria-live="polite">
                 <span class="flow__k">03</span>
-                <span class="flow__v"><span id="slot-name">Modèle de pointe</span><small id="slot-note">Claude ou GPT, via votre environnement d'entreprise</small></span>
+                <span class="flow__v"><span id="slot-name">Modèle frontier</span><small id="slot-note">Claude ou GPT, via votre environnement d'entreprise</small></span>
               </li>
               <li class="flow__node">
                 <span class="flow__k">04</span>
@@ -100,11 +105,11 @@
           <div class="swap" role="group" aria-label="Changer de modèle">
             <span class="swap__label">Changer la pièce 03</span>
             <button type="button" class="chip is-on" aria-pressed="true"
-              data-name="Modèle de pointe" data-note="Claude ou GPT, via votre environnement d'entreprise">De pointe</button>
+              data-name="Modèle frontier" data-note="Claude ou GPT, via votre environnement d'entreprise">Frontier</button>
             <button type="button" class="chip" aria-pressed="false"
-              data-name="Modèle à poids ouverts" data-note="Hébergé sur votre cloud ou vos serveurs">Poids ouverts</button>
+              data-name="Modèle open source" data-note="Hébergé sur votre cloud ou vos serveurs">Open source</button>
             <button type="button" class="chip" aria-pressed="false"
-              data-name="Modèle affiné" data-note="Entraîné sur votre méthode et votre vocabulaire, hébergé chez vous">Affiné</button>
+              data-name="Modèle fine-tuné" data-note="Entraîné sur votre méthode et votre vocabulaire, hébergé chez vous">Fine-tuné</button>
           </div>
           <figcaption id="boundary-caption"><span class="eq">swap(m) → rejouer votre jeu d'évaluation → livrer seulement si les KPI tiennent.</span>Le modèle n'est qu'une pièce. Tout ce qui l'entoure est le produit, et il reste chez vous.</figcaption>
         </figure>
@@ -124,7 +129,7 @@
       <div class="wrap">
         <header class="section__head reveal">
           <p class="eyebrow"><span class="num">§01</span> Parti pris</p>
-          <h2>Les modèles de pointe ont fait du modèle la partie facile.</h2>
+          <h2>Les modèles frontier ont fait du modèle la partie facile.</h2>
           <p class="section__intro">
             Quand les modèles résolvent les mathématiques, trois choses restent difficiles : poser le bon problème, prouver la réponse sur vos propres données, et la faire tourner là où ces données vivent. C'est ce que nous construisons.
           </p>
@@ -132,7 +137,7 @@
         <div class="grid3">
           <article class="point reveal">
             <h3>Des modèles sous votre contrôle</h3>
-            <p>N'importe quel modèle, dans votre périmètre. Nous partons de ce que votre environnement fournit déjà, et nous affinons un modèle sur vos données quand la précision et le coût le justifient.</p>
+            <p>N'importe quel modèle, dans votre périmètre. Nous partons de ce que votre environnement fournit déjà, et nous fine-tunons un modèle sur vos données quand la précision et le coût le justifient.</p>
           </article>
           <article class="point reveal">
             <h3>La donnée comme actif stratégique</h3>
@@ -166,7 +171,7 @@
             <div><dt>Enjeu</dt><dd>Les équipes marketing avaient besoin d'une méthode commune pour transformer des verbatims consommateurs bruts en insights exploitables.</dd></div>
             <div><dt>Système</dt><dd>Un agent en plusieurs étapes (diagnostiquer, approfondir, formaliser) qui note la qualité en temps réel sur 7 critères, réoriente la conversation et produit une fiche insight prête pour le brief.</dd></div>
             <div><dt>Sécurité des données</dt><dd>Construit sur une pile entièrement locale avec des données fictives, puis branché sur l'environnement d'entreprise du client. Les données ne quittent jamais son périmètre. L'architecture est indépendante du fournisseur de modèle.</dd></div>
-            <div><dt>Suite</dt><dd>Un modèle affiné sur la méthode et le vocabulaire du client, hébergé chez lui.</dd></div>
+            <div><dt>Suite</dt><dd>Un modèle fine-tuné sur la méthode et le vocabulaire du client, hébergé chez lui.</dd></div>
           </dl>
         </article>
 
@@ -192,7 +197,7 @@
           </header>
           <dl class="case__body">
             <div><dt>Enjeu</dt><dd>Le client vend à des milliers de garages et d'ateliers informels. Il n'en existe aucune carte, et un recensement de terrain prendrait des semaines.</dd></div>
-            <div><dt>Système</dt><dd>Un modèle de détection affiné sur de l'imagerie satellite à très haute résolution repère les zones d'activité mécanique. Une application cartographique permet aux commerciaux de cibler, filtrer et suivre leurs visites de terrain.</dd></div>
+            <div><dt>Système</dt><dd>Un modèle de détection fine-tuné sur de l'imagerie satellite à très haute résolution repère les zones d'activité mécanique. Une application cartographique permet aux commerciaux de cibler, filtrer et suivre leurs visites de terrain.</dd></div>
             <div><dt>Sécurité des données</dt><dd>Accès authentifié par rôle sur un hébergement cloud dédié. Les équipes de terrain valident les faux positifs, et le modèle continue de s'améliorer sur les données du client.</dd></div>
             <div><dt>Échelle</dt><dd>Une méthode reproductible ville par ville : Dakar, puis Thiès, Touba et Tambacounda, à coût marginal.</dd></div>
           </dl>
@@ -238,7 +243,7 @@
               <h3>Vérifier que 80 % veut dire 80 %</h3>
               <p class="mcard__eq">P(bas ≤ y ≤ haut) = 0,80, puis compté</p>
               <p>Une bande ne vaut que par sa couverture. Sur des actifs que le modèle n'a jamais vus, nous comptons combien de fois la réalité est tombée dedans, et nous affichons le chiffre tel qu'il est.</p>
-              <p class="mcard__note">Ci-dessus : couverture annoncée contre couverture observée. Sur la diagonale, le modèle est calibré.</p>
+              <p class="mcard__note">Ci-dessus : la fréquence à laquelle la réalité est tombée dans la bande à 80 %. Trait fin : chaque lot de 16 actifs jamais vus, qui varie. Trait orange : tout ce qui a été compté jusqu'ici, qui se stabilise. Cercles : les prévisions affichées dans le graphique du milieu, un triangle sous 60 %.</p>
             </div>
           </article>
         </div>
@@ -293,7 +298,7 @@
             <p class="step__goal">Votre service d'IA en production, à l'échelle.</p>
             <ul>
               <li>MLOps et LLMOps : CI/CD, supervision</li>
-              <li>Modèles hébergés, affinés quand c'est utile</li>
+              <li>Modèles hébergés, fine-tunés quand c'est utile</li>
               <li>Cloud ou sur site</li>
               <li>Sécurité de bout en bout</li>
               <li>Équipes formées et autonomes</li>
@@ -332,7 +337,7 @@
         </header>
         <ul class="guarantees">
           <li class="reveal"><h3>Dans votre environnement</h3><p>Déployé dans votre tenant cloud ou sur vos serveurs, hébergé là où vous l'exigez.</p></li>
-          <li class="reveal"><h3>Des modèles chez vous</h3><p>Les modèles à poids ouverts peuvent être affinés et hébergés chez vous : aucune donnée ne part chez un tiers.</p></li>
+          <li class="reveal"><h3>Des modèles chez vous</h3><p>Les modèles open source peuvent être fine-tunés et hébergés chez vous : aucune donnée ne part chez un tiers.</p></li>
           <li class="reveal"><h3>Zéro réutilisation</h3><p>Vos données n'entraînent jamais de modèles tiers et ne servent jamais un autre client.</p></li>
           <li class="reveal"><h3>Droits d'accès respectés</h3><p>Contrôle par rôle et sécurité au niveau des lignes : l'IA ne renvoie jamais plus que ce que les droits d'un utilisateur autorisent.</p></li>
           <li class="reveal"><h3>Traçabilité complète</h3><p>Lignage des données et journaux d'audit. Chaque résultat peut être justifié jusqu'à sa source.</p></li>
@@ -363,13 +368,6 @@
             <p>Passé par la Digital Factory de TotalEnergies sur plus de 100 modèles industriels de détection d'anomalies ; tech lead chez Lengo AI ; prévision en production chez Engie. Enseigne le cloud à l'EPITA.</p>
             <p class="person__edu">MSc Mathématiques appliquées (Sorbonne) · Ingénieur Data Science (ISUP)</p>
           </li>
-          <li class="person reveal">
-            <span class="person__mono" aria-hidden="true">SN</span>
-            <h3>Seydou Niang</h3>
-            <p class="person__role">Tech lead · Data science &amp; IA</p>
-            <p>Ancien responsable IA chez Expleo Group (NLP, IA générative, deep learning) pour des clients de l'automobile et de l'aéronautique ; maintenance prédictive et optimisation de stock chez TNP Consultants. Cofondateur d'un centre de formation en IA.</p>
-            <p class="person__edu">Ingénieur, ENSAI Rennes · Certifié AWS</p>
-          </li>
         </ul>
       </div>
     </section>
@@ -383,12 +381,12 @@
         </header>
         <div class="faq reveal">
           <details>
-            <summary>Notre équipe a déjà accès à un modèle de pointe. Pourquoi faire appel à un studio ?</summary>
+            <summary>Notre équipe a déjà accès à un modèle frontier. Pourquoi faire appel à un studio ?</summary>
             <p>L'accès à un modèle n'est pas un système. Le vrai travail, c'est de le connecter à vos données en conservant les droits d'accès, de l'évaluer sur vos cas réels, d'ajouter des garde-fous et de l'opérer en production. C'est cette partie que nous construisons, et celle que vous gardez.</p>
           </details>
           <details>
-            <summary>Faut-il toujours affiner et auto-héberger les modèles ?</summary>
-            <p>Non. Nos architectures sont indépendantes du fournisseur de modèle. Nous utilisons le modèle qui convient : un modèle déjà disponible dans votre environnement d'entreprise, ou un modèle à poids ouverts hébergé chez vous quand la confidentialité, la précision ou le coût le demandent.</p>
+            <summary>Faut-il toujours fine-tuner et auto-héberger les modèles ?</summary>
+            <p>Non. Nos architectures sont indépendantes du fournisseur de modèle. Nous utilisons le modèle qui convient : un modèle déjà disponible dans votre environnement d'entreprise, ou un modèle open source hébergé chez vous quand la confidentialité, la précision ou le coût le demandent.</p>
           </details>
           <details>
             <summary>Qu'obtient-on à l'issue de l'audit de 1 à 3 jours ?</summary>
@@ -422,6 +420,7 @@
     <div class="wrap footer__inner">
       <span>© 2026 QuasarZero</span>
       <span>Dakar · Paris · Seattle</span>
+      <a href="mentions-legales/">Mentions légales</a>
       <a class="footer__lang" href="../" hreflang="en" lang="en">English</a>
       <a href="#top">Retour en haut</a>
     </div>
