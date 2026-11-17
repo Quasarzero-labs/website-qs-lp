@@ -318,6 +318,27 @@ if ('IntersectionObserver' in window) {
   var MONO = "12px 'JetBrains Mono', monospace", SMALL = "10px 'JetBrains Mono', monospace";
   var PAD = 14, FOOT = 22, TOP = 36, YMAX = 1.15, DRAWS = 2400, STEP = 1700, SEEN = 400000;
   var sizes = {}, S = null;
+  // Labels drawn inside the plots follow the page language
+  var FR = document.documentElement.lang === 'fr', LOCALE = FR ? 'fr-FR' : 'en-US';
+  function num(v) { return v.toLocaleString(LOCALE); }
+  function pct(v, digits) {
+    return (100 * v).toLocaleString(LOCALE, { minimumFractionDigits: digits, maximumFractionDigits: digits }) + (FR ? '\u00a0%' : '%');
+  }
+  var L = FR ? {
+    month: 'mois ',
+    shapes: function (d, e) { return d + ' formes portent ' + pct(e, 1) + ' de la variance'; },
+    forecast: function (m, n) { return 'historique ' + m + ' mois · N = ' + num(n); },
+    coverage: function (o) { return 'annoncé ' + pct(0.8, 0) + ' · observé ' + pct(o, 1); },
+    seen: function (n) { return 'n = ' + num(n) + ' mois-actifs jamais vus'; },
+    announced: 'annoncé '
+  } : {
+    month: 'month ',
+    shapes: function (d, e) { return d + ' shapes carry ' + pct(e, 1) + ' of the variance'; },
+    forecast: function (m, n) { return 'history ' + m + ' mo · N = ' + num(n) + ' draws'; },
+    coverage: function (o) { return 'announced ' + pct(0.8, 0) + ' · observed ' + pct(o, 1); },
+    seen: function (n) { return 'n = ' + num(n) + ' unseen asset-months'; },
+    announced: 'announced '
+  };
 
   function nextStep() {
     var t;
@@ -426,8 +447,8 @@ if ('IntersectionObserver' in window) {
       path(g, M.rebuild(S.model, S.score, n), m + 1); ctx.stroke();
     }
     ctx.globalAlpha = 1;
-    baseline(g, 'month 1', 'month ' + P.T);
-    head(g, P.D + ' shapes carry ' + (100 * S.model.explained).toFixed(1) + '% of the variance');
+    baseline(g, L.month + 1, L.month + P.T);
+    head(g, L.shapes(P.D, S.model.explained));
   }
   // 2. History, simulated band and base case, exact band, and what actually happened
   function drawForecast() {
@@ -454,8 +475,8 @@ if ('IntersectionObserver' in window) {
     ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
     path(g, S.y.slice(0, m), 1); ctx.stroke();
     boundary(g, m);
-    baseline(g, 'month 1', 'month ' + P.T);
-    head(g, 'history ' + m + ' mo · N = ' + S.n.toLocaleString('en-US') + ' draws');
+    baseline(g, L.month + 1, L.month + P.T);
+    head(g, L.forecast(m, S.n));
   }
   // 3. Announced coverage against observed coverage on unseen assets
   function drawCheck() {
@@ -476,10 +497,10 @@ if ('IntersectionObserver' in window) {
         ctx.beginPath(); ctx.arc(x, y, l === 3 ? 4.5 : 3, 0, 6.2832);
         ctx.fillStyle = l === 3 ? SIGNAL : INK; ctx.fill();
       }
-      head(g, 'announced 80% · observed ' + (100 * obs).toFixed(1) + '%');
-      head(g, 'n = ' + S.tally.n.toLocaleString('en-US') + ' unseen asset-months', true);
+      head(g, L.coverage(obs));
+      head(g, L.seen(S.tally.n), true);
     }
-    baseline(g, '40%', 'announced 100%');
+    baseline(g, pct(0.4, 0), L.announced + pct(1, 0));
   }
   function anyVisible() {
     return vis.shapes !== false || vis.forecast !== false || vis.check !== false;

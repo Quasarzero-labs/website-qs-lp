@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuasarZero — Studio Data &amp; IA</title>
+  <meta name="description" content="QuasarZero est un studio Data & IA. Nous concevons, construisons et opérons des systèmes d'IA sur mesure (agents, modèles et plateformes de données) dans votre environnement. Tout commence par un audit de 1 à 3 jours.">
+  <meta property="og:title" content="QuasarZero — Studio Data & IA">
+  <meta property="og:description" content="Des systèmes d'IA qui vous appartiennent, construits dans votre périmètre. Tout commence par un audit de 1 à 3 jours.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://www.quasarzero.fr/fr/">
+  <link rel="alternate" hreflang="en" href="https://www.quasarzero.fr/">
+  <link rel="alternate" hreflang="fr" href="https://www.quasarzero.fr/fr/">
+  <link rel="alternate" hreflang="x-default" href="https://www.quasarzero.fr/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://www.quasarzero.fr/fr/">
+  <meta name="theme-color" content="#0b0b0d">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <a class="skip" href="#main">Aller au contenu</a>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav__inner">
+      <a href="#top" class="logo" aria-label="QuasarZero, accueil">
+        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <ellipse cx="16" cy="16" rx="14.5" ry="4.4" transform="rotate(-24 16 16)" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <circle class="logo__zero" cx="16" cy="16" r="6.6" stroke="currentColor" stroke-width="2.2"/>
+          <path class="logo__arc" d="M1.5 16 A14.5 4.4 0 0 0 30.5 16" transform="rotate(-24 16 16)" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span>QuasarZero</span>
+      </a>
+      <nav class="nav__links" aria-label="Sections">
+        <a href="#stance">Parti pris</a>
+        <a href="#work">Réalisations</a>
+        <a href="#method">Méthode</a>
+        <a href="#engagement">Démarche</a>
+        <a href="#security">Sécurité</a>
+        <a href="#team">Équipe</a>
+      </nav>
+      <a class="lang" href="../" hreflang="en" lang="en" aria-label="English version">EN</a>
+      <a href="#contact" class="btn btn--small">Demander un audit</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <canvas class="hero__field" id="field" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <p class="eyebrow">Studio Data &amp; IA · Dakar · Paris · Seattle</p>
+        <h1>Des systèmes d'IA sur mesure, construits chez vous. <span class="accent">Ils vous appartiennent.</span></h1>
+        <p class="hero__eq" aria-hidden="true">ω ∝ r^(−3/2) ;  r(t) = r(0) · e^(−λt)</p>
+      </div>
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="lede">
+            Les modèles changent sans cesse. Votre avantage ne doit pas changer avec eux. QuasarZero est un studio Data &amp; IA de mathématiciens appliqués et d'ingénieurs : nous concevons chaque système pour que tout nouveau modèle soit une mise à niveau, pas une réécriture.
+          </p>
+          <p class="lede lede--strong">Tout commence par un audit de 1 à 3 jours.</p>
+          <div class="hero__actions">
+            <a href="#contact" class="btn">Demander un audit</a>
+            <a href="#work" class="link-arrow">Voir les réalisations</a>
+          </div>
+        </div>
+
+        <!-- The boundary: the model is a swappable part, the system stays yours -->
+        <figure class="boundary" aria-labelledby="boundary-caption">
+          <div class="boundary__frame">
+            <span class="boundary__tag">Votre périmètre</span>
+            <ol class="flow">
+              <li class="flow__node">
+                <span class="flow__k">01</span>
+                <span class="flow__v">Vos données<small>ERP, documents, verbatims, imagerie</small></span>
+              </li>
+              <li class="flow__node">
+                <span class="flow__k">02</span>
+                <span class="flow__v">Pipelines &amp; recherche<small>Gouvernés, versionnés, droits d'accès conservés</small></span>
+              </li>
+              <li class="flow__node flow__node--slot" id="slot" aria-live="polite">
+                <span class="flow__k">03</span>
+                <span class="flow__v"><span id="slot-name">Modèle de pointe</span><small id="slot-note">Claude ou GPT, via votre environnement d'entreprise</small></span>
+              </li>
+              <li class="flow__node">
+                <span class="flow__k">04</span>
+                <span class="flow__v">Agent &amp; garde-fous<small>Évalués en continu sur vos KPI</small></span>
+              </li>
+              <li class="flow__node">
+                <span class="flow__k">05</span>
+                <span class="flow__v">Vos équipes<small>Formées, autonomes, propriétaires du système</small></span>
+              </li>
+            </ol>
+          </div>
+          <div class="swap" role="group" aria-label="Changer de modèle">
+            <span class="swap__label">Changer la pièce 03</span>
+            <button type="button" class="chip is-on" aria-pressed="true"
+              data-name="Modèle de pointe" data-note="Claude ou GPT, via votre environnement d'entreprise">De pointe</button>
+            <button type="button" class="chip" aria-pressed="false"
+              data-name="Modèle à poids ouverts" data-note="Hébergé sur votre cloud ou vos serveurs">Poids ouverts</button>
+            <button type="button" class="chip" aria-pressed="false"
+              data-name="Modèle affiné" data-note="Entraîné sur votre méthode et votre vocabulaire, hébergé chez vous">Affiné</button>
+          </div>
+          <figcaption id="boundary-caption"><span class="eq">swap(m) → rejouer votre jeu d'évaluation → livrer seulement si les KPI tiennent.</span>Le modèle n'est qu'une pièce. Tout ce qui l'entoure est le produit, et il reste chez vous.</figcaption>
+        </figure>
+      </div>
+
+      <div class="wrap">
+        <dl class="stats">
+          <div><dt>21+</dt><dd>années d'expérience, équipe senior</dd></div>
+          <div><dt>40+</dt><dd>systèmes data &amp; IA mis en production</dd></div>
+          <div><dt>3</dt><dd>continents : Afrique de l'Ouest, Europe, Amérique du Nord</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============ STANCE ============ -->
+    <section class="section" id="stance">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§01</span> Parti pris</p>
+          <h2>Les modèles de pointe ont fait du modèle la partie facile.</h2>
+          <p class="section__intro">
+            Quand les modèles résolvent les mathématiques, trois choses restent difficiles : poser le bon problème, prouver la réponse sur vos propres données, et la faire tourner là où ces données vivent. C'est ce que nous construisons.
+          </p>
+        </header>
+        <div class="grid3">
+          <article class="point reveal">
+            <h3>Des modèles sous votre contrôle</h3>
+            <p>N'importe quel modèle, dans votre périmètre. Nous partons de ce que votre environnement fournit déjà, et nous affinons un modèle sur vos données quand la précision et le coût le justifient.</p>
+          </article>
+          <article class="point reveal">
+            <h3>La donnée comme actif stratégique</h3>
+            <p>Gouvernée, sécurisée et exploitable. Un modèle est le même pour tout le monde ; ce sont vos données qui rendent votre IA différente de celle de votre concurrent.</p>
+          </article>
+          <article class="point reveal">
+            <h3>La preuve avant l'échelle</h3>
+            <p>Un pilote mesuré sur vos cas réels, avec des KPI fixés d'avance et des marges d'erreur publiées. Ensuite nous industrialisons ce qui marche, et nous arrêtons le reste.</p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="section section--tint" id="work">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§02</span> Réalisations</p>
+          <h2>Trois systèmes, trois formes d'IA.</h2>
+          <p class="section__intro">Les clients ne sont pas nommés : nos contrats sont confidentiels. Les systèmes sont réels.</p>
+        </header>
+
+        <article class="case reveal">
+          <header class="case__head">
+            <p class="case__tag">01 / 03 · Agent IA · Santé grand public</p>
+            <h3>Du verbatim consommateur à l'insight prêt pour le brief</h3>
+            <p class="case__who">Une entreprise de santé grand public. Réalisé avec un cabinet partenaire, qui a porté la méthode et la conduite du changement ; nous avons conçu et construit l'agent.</p>
+          </header>
+          <dl class="case__body">
+            <div><dt>Enjeu</dt><dd>Les équipes marketing avaient besoin d'une méthode commune pour transformer des verbatims consommateurs bruts en insights exploitables.</dd></div>
+            <div><dt>Système</dt><dd>Un agent en plusieurs étapes (diagnostiquer, approfondir, formaliser) qui note la qualité en temps réel sur 7 critères, réoriente la conversation et produit une fiche insight prête pour le brief.</dd></div>
+            <div><dt>Sécurité des données</dt><dd>Construit sur une pile entièrement locale avec des données fictives, puis branché sur l'environnement d'entreprise du client. Les données ne quittent jamais son périmètre. L'architecture est indépendante du fournisseur de modèle.</dd></div>
+            <div><dt>Suite</dt><dd>Un modèle affiné sur la méthode et le vocabulaire du client, hébergé chez lui.</dd></div>
+          </dl>
+        </article>
+
+        <article class="case reveal">
+          <header class="case__head">
+            <p class="case__tag">02 / 03 · Plateforme data &amp; IA · Énergie</p>
+            <h3>Chaque chiffre traçable jusqu'à sa ligne source</h3>
+            <p class="case__who">Un major de l'énergie, filiale marketing en Afrique de l'Ouest. SAP, Databricks, Unity Catalog, Power BI.</p>
+          </header>
+          <dl class="case__body">
+            <div><dt>Enjeu</dt><dd>Le reporting reposait sur des extractions Excel manuelles : rafraîchissements fragiles, aucune traçabilité, anomalies découvertes en comité de pilotage.</dd></div>
+            <div><dt>Système</dt><dd>Un Lakehouse Databricks alimenté depuis le réplica SAP HANA, sans impact sur la production. Transformations versionnées, pipeline quotidien supervisé, Power BI connecté en direct.</dd></div>
+            <div><dt>Sécurité des données</dt><dd>Lignage, accès par rôle et audit via Unity Catalog. Sécurité au niveau des lignes reportée jusque dans Power BI.</dd></div>
+            <div><dt>Couche IA</dt><dd>Chaque matin, une analyse générée par KPI et des alertes sur les volumes ou ventes anormaux, envoyées dans Teams avant le comité de pilotage.</dd></div>
+          </dl>
+        </article>
+
+        <article class="case reveal">
+          <header class="case__head">
+            <p class="case__tag">03 / 03 · Vision par ordinateur · Distribution</p>
+            <h3>Cartographier des milliers de garages informels par imagerie satellite</h3>
+            <p class="case__who">Un distributeur de lubrifiants au Sénégal. Imagerie satellite, deep learning, cartographie.</p>
+          </header>
+          <dl class="case__body">
+            <div><dt>Enjeu</dt><dd>Le client vend à des milliers de garages et d'ateliers informels. Il n'en existe aucune carte, et un recensement de terrain prendrait des semaines.</dd></div>
+            <div><dt>Système</dt><dd>Un modèle de détection affiné sur de l'imagerie satellite à très haute résolution repère les zones d'activité mécanique. Une application cartographique permet aux commerciaux de cibler, filtrer et suivre leurs visites de terrain.</dd></div>
+            <div><dt>Sécurité des données</dt><dd>Accès authentifié par rôle sur un hébergement cloud dédié. Les équipes de terrain valident les faux positifs, et le modèle continue de s'améliorer sur les données du client.</dd></div>
+            <div><dt>Échelle</dt><dd>Une méthode reproductible ville par ville : Dakar, puis Thiès, Touba et Tambacounda, à coût marginal.</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ METHOD ============ -->
+    <!-- One forecast worked end to end on synthetic data: reduce, forecast, check. Computed live in script.js -->
+    <section class="section" id="method">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§03</span> Les mathématiques en dessous</p>
+          <h2>Une prévision, calculée sous vos yeux.</h2>
+          <p class="section__intro">Que produira un actif vieillissant dans les années qui viennent : scénario bas, central et haut ? Un modèle peut écrire le code. Il ne décide pas de ce qui mérite d'être estimé, ni du degré de confiance à accorder à la réponse.</p>
+        </header>
+        <p class="math__note reveal">Actifs synthétiques, générés dans votre navigateur : 200 pour apprendre, les autres jamais vus par le modèle. La production est rapportée à celle du premier mois de chaque actif.</p>
+        <div class="math__cards reveal">
+          <article class="mcard">
+            <canvas class="mcard__plot" id="plot-shapes" aria-hidden="true"></canvas>
+            <div class="mcard__body">
+              <p class="mcard__tag">01 · Composantes principales</p>
+              <h3>Trouver les quelques formes qui comptent</h3>
+              <p class="mcard__eq">y ≈ ȳ + s₁u₁ + s₂u₂ + s₃u₃</p>
+              <p>Deux cents courbes de déclin semblent toutes différentes, et pourtant trois formes les expliquent presque entièrement. Prévoir trois nombres est bien plus stable que prévoir chaque mois.</p>
+              <p class="mcard__note">Ci-dessus : 200 actifs connus (en fond) et un futur jamais vu (points), reconstruit avec 1, 2 puis 3 formes.</p>
+            </div>
+          </article>
+          <article class="mcard">
+            <canvas class="mcard__plot" id="plot-forecast" aria-hidden="true"></canvas>
+            <div class="mcard__body">
+              <p class="mcard__tag">02 · Régression bayésienne · Monte Carlo</p>
+              <h3>Prévoir le bas, le central et le haut</h3>
+              <p class="mcard__eq">s | historique ~ N(mᵀφ, 1/β + φᵀSφ)</p>
+              <p>Les premiers mois d'un actif prédisent ses trois nombres, incertitude comprise. Nous simulons des milliers de futurs et lisons la bande. Une bande exacte existe ici, alors nous la traçons pour contrôler la simulation.</p>
+              <p class="mcard__note">Ci-dessus : l'historique, la bande simulée à 80 % et le scénario central, la bande exacte (traits fins), et ce qui s'est réellement passé (points). α, β = argmax p(s | α, β).</p>
+            </div>
+          </article>
+          <article class="mcard">
+            <canvas class="mcard__plot" id="plot-check" aria-hidden="true"></canvas>
+            <div class="mcard__body">
+              <p class="mcard__tag">03 · Calibration</p>
+              <h3>Vérifier que 80 % veut dire 80 %</h3>
+              <p class="mcard__eq">P(bas ≤ y ≤ haut) = 0,80, puis compté</p>
+              <p>Une bande ne vaut que par sa couverture. Sur des actifs que le modèle n'a jamais vus, nous comptons combien de fois la réalité est tombée dedans, et nous affichons le chiffre tel qu'il est.</p>
+              <p class="mcard__note">Ci-dessus : couverture annoncée contre couverture observée. Sur la diagonale, le modèle est calibré.</p>
+            </div>
+          </article>
+        </div>
+        <p class="math__after reveal">La même chaîne (réduire, prévoir, vérifier) sert pour la prévision de la demande, des prix et de la maintenance. Chaque chiffre ci-dessus est calculé dans votre navigateur pendant que vous lisez.</p>
+      </div>
+    </section>
+
+    <!-- ============ ENGAGEMENT ============ -->
+    <section class="section section--tint" id="engagement">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§04</span> Démarche</p>
+          <h2>Trois étapes. Périmètre et KPI fixés à chacune.</h2>
+          <p class="section__intro">Aucune phase ne démarre sans votre accord écrit. La première étape est volontairement petite.</p>
+        </header>
+
+        <div class="scale reveal" aria-hidden="true">
+          <span class="scale__bar scale__bar--1"></span>
+          <span class="scale__bar scale__bar--2"></span>
+          <span class="scale__bar scale__bar--3"></span>
+        </div>
+        <p class="scale__note reveal">Durées à l'échelle : 1 à 3 jours, environ 4 semaines, 6 à 8 semaines.</p>
+
+        <ol class="steps">
+          <li class="step step--first reveal">
+            <p class="step__when">Étape 1 · 1 à 3 jours</p>
+            <h3>Audit &amp; feuille de route</h3>
+            <p class="step__goal">Décider quoi construire, et pourquoi.</p>
+            <ul>
+              <li>Audit des données et de l'architecture</li>
+              <li>Cas d'usage classés par ROI et faisabilité</li>
+              <li>Architecture cible et plan</li>
+              <li>Risques, RGPD, charge et coût</li>
+              <li>Une décision go / no-go</li>
+            </ul>
+          </li>
+          <li class="step reveal">
+            <p class="step__when">Étape 2 · Environ 4 semaines</p>
+            <h3>Pilote / MVP</h3>
+            <p class="step__goal">Une première version qui tourne sur vos données.</p>
+            <ul>
+              <li>Modèle, agent ou automatisation</li>
+              <li>Pipeline de la donnée à l'inférence</li>
+              <li>Évaluation sur vos KPI, avec intervalles de confiance</li>
+              <li>Supervision et journaux</li>
+              <li>Documentation et passation</li>
+            </ul>
+          </li>
+          <li class="step reveal">
+            <p class="step__when">Étape 3 · 6 à 8 semaines</p>
+            <h3>Industrialisation</h3>
+            <p class="step__goal">Votre service d'IA en production, à l'échelle.</p>
+            <ul>
+              <li>MLOps et LLMOps : CI/CD, supervision</li>
+              <li>Modèles hébergés, affinés quand c'est utile</li>
+              <li>Cloud ou sur site</li>
+              <li>Sécurité de bout en bout</li>
+              <li>Équipes formées et autonomes</li>
+            </ul>
+          </li>
+        </ol>
+        <p class="after reveal"><strong>Ensuite, en continu :</strong> supervision, maintenance des modèles, nouvelles fonctionnalités et montée en charge.</p>
+      </div>
+    </section>
+
+    <!-- ============ CAPABILITIES ============ -->
+    <section class="section" id="capabilities">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§05</span> Ce que nous construisons</p>
+          <h2>De l'ingénierie de production, pas des slides.</h2>
+        </header>
+        <ul class="caps">
+          <li class="reveal"><h3>Stratégie IA &amp; cadrage</h3><p>Cas d'usage classés par ROI et faisabilité, architecture cible, feuille de route, go / no-go.</p></li>
+          <li class="reveal"><h3>Agents IA &amp; RAG</h3><p>Assistants et agents connectés à vos outils et documents, évalués en continu, encadrés par des garde-fous.</p></li>
+          <li class="reveal"><h3>Modèles sur mesure</h3><p>Prévision probabiliste, optimisation, vision par ordinateur, NLP : des modèles ajustés à vos données et à votre métier.</p></li>
+          <li class="reveal"><h3>Data engineering</h3><p>Ingestion, qualité, orchestration : des plateformes de données gouvernées sur lesquelles vos équipes peuvent compter.</p></li>
+          <li class="reveal"><h3>Industrialisation</h3><p>MLOps et LLMOps : CI/CD, supervision, montée en charge, déploiement cloud ou sur site.</p></li>
+          <li class="reveal"><h3>Formation &amp; passation</h3><p>Ateliers et sessions projet ancrés dans votre contexte, pour que vos équipes opèrent le système.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ SECURITY ============ -->
+    <section class="section section--ink" id="security">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§06</span> Sécurité des données</p>
+          <h2>Vos données restent les vôtres.</h2>
+          <p class="section__intro">Conçu pour les environnements sensibles : données clients, financières, industrielles et de santé. La sécurité est fixée dès le cadrage, pas ajoutée à la fin.</p>
+        </header>
+        <ul class="guarantees">
+          <li class="reveal"><h3>Dans votre environnement</h3><p>Déployé dans votre tenant cloud ou sur vos serveurs, hébergé là où vous l'exigez.</p></li>
+          <li class="reveal"><h3>Des modèles chez vous</h3><p>Les modèles à poids ouverts peuvent être affinés et hébergés chez vous : aucune donnée ne part chez un tiers.</p></li>
+          <li class="reveal"><h3>Zéro réutilisation</h3><p>Vos données n'entraînent jamais de modèles tiers et ne servent jamais un autre client.</p></li>
+          <li class="reveal"><h3>Droits d'accès respectés</h3><p>Contrôle par rôle et sécurité au niveau des lignes : l'IA ne renvoie jamais plus que ce que les droits d'un utilisateur autorisent.</p></li>
+          <li class="reveal"><h3>Traçabilité complète</h3><p>Lignage des données et journaux d'audit. Chaque résultat peut être justifié jusqu'à sa source.</p></li>
+          <li class="reveal"><h3>Conformité &amp; réversibilité</h3><p>RGPD et réglementations locales. Code, index et paramétrages vous reviennent intégralement.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ TEAM ============ -->
+    <section class="section" id="team">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§07</span> Équipe</p>
+          <h2>Des seniors qui construisent et opèrent ce qu'ils vendent.</h2>
+        </header>
+        <ul class="team">
+          <li class="person reveal">
+            <span class="person__mono" aria-hidden="true">HD</span>
+            <h3>Hermann Djophant</h3>
+            <p class="person__role">IA prédictive · Prévision &amp; pricing</p>
+            <p>Ancien tech lead chez BMW France sur la maintenance prédictive, la prévision et les modèles de pricing ; prévision probabiliste pétrole &amp; gaz chez TotalEnergies ; IA prédictive pour la recharge de véhicules électriques chez Gireve.</p>
+            <p class="person__edu">MSc Mathématiques appliquées (Sorbonne) · Ingénieur Data Science (ISUP)</p>
+          </li>
+          <li class="person reveal">
+            <span class="person__mono" aria-hidden="true">EG</span>
+            <h3>Elhadji Gagny</h3>
+            <p class="person__role">Ingénieur ML · MLOps &amp; cloud</p>
+            <p>Passé par la Digital Factory de TotalEnergies sur plus de 100 modèles industriels de détection d'anomalies ; tech lead chez Lengo AI ; prévision en production chez Engie. Enseigne le cloud à l'EPITA.</p>
+            <p class="person__edu">MSc Mathématiques appliquées (Sorbonne) · Ingénieur Data Science (ISUP)</p>
+          </li>
+          <li class="person reveal">
+            <span class="person__mono" aria-hidden="true">SN</span>
+            <h3>Seydou Niang</h3>
+            <p class="person__role">Tech lead · Data science &amp; IA</p>
+            <p>Ancien responsable IA chez Expleo Group (NLP, IA générative, deep learning) pour des clients de l'automobile et de l'aéronautique ; maintenance prédictive et optimisation de stock chez TNP Consultants. Cofondateur d'un centre de formation en IA.</p>
+            <p class="person__edu">Ingénieur, ENSAI Rennes · Certifié AWS</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section section--tint" id="faq">
+      <div class="wrap wrap--narrow">
+        <header class="section__head reveal">
+          <p class="eyebrow"><span class="num">§08</span> Questions</p>
+          <h2>Ce que les acheteurs nous demandent d'abord.</h2>
+        </header>
+        <div class="faq reveal">
+          <details>
+            <summary>Notre équipe a déjà accès à un modèle de pointe. Pourquoi faire appel à un studio ?</summary>
+            <p>L'accès à un modèle n'est pas un système. Le vrai travail, c'est de le connecter à vos données en conservant les droits d'accès, de l'évaluer sur vos cas réels, d'ajouter des garde-fous et de l'opérer en production. C'est cette partie que nous construisons, et celle que vous gardez.</p>
+          </details>
+          <details>
+            <summary>Faut-il toujours affiner et auto-héberger les modèles ?</summary>
+            <p>Non. Nos architectures sont indépendantes du fournisseur de modèle. Nous utilisons le modèle qui convient : un modèle déjà disponible dans votre environnement d'entreprise, ou un modèle à poids ouverts hébergé chez vous quand la confidentialité, la précision ou le coût le demandent.</p>
+          </details>
+          <details>
+            <summary>Qu'obtient-on à l'issue de l'audit de 1 à 3 jours ?</summary>
+            <p>Un audit des données et de l'architecture, des cas d'usage classés par ROI et faisabilité, une architecture cible avec charge, coût et calendrier, les risques, et un go / no-go clair. Vous pouvez vous arrêter là.</p>
+          </details>
+          <details>
+            <summary>À qui appartient ce que vous construisez ?</summary>
+            <p>À vous. Code, index et paramétrages vous reviennent, avec la documentation et les modes opératoires pour que vos équipes puissent opérer et étendre le système.</p>
+          </details>
+          <details>
+            <summary>Comment travaillez-vous au quotidien ?</summary>
+            <p>Un point hebdomadaire de 30 minutes, un compte rendu écrit par semaine, et une validation formelle à chaque étape.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section section--ink cta" id="contact">
+      <div class="wrap">
+        <p class="eyebrow">Première étape</p>
+        <h2>Un échange de 45 minutes, puis un audit de 1 à 3 jours.</h2>
+        <p class="section__intro">Dites-nous ce que vous cherchez à décider. Nous répondons sous 24 à 48 heures.</p>
+        <a href="mailto:contact@quasarzero.fr?subject=Audit%20%26%20feuille%20de%20route" class="btn btn--light">contact@quasarzero.fr</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span>© 2026 QuasarZero</span>
+      <span>Dakar · Paris · Seattle</span>
+      <a class="footer__lang" href="../" hreflang="en" lang="en">English</a>
+      <a href="#top">Retour en haut</a>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

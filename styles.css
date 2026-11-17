@@ -87,6 +87,8 @@ h3 { font-size: 1.2rem; letter-spacing: -0.01em; line-height: 1.25; }
 .nav__links { display: flex; gap: 26px; margin-left: auto; }
 .nav__links a { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-soft); }
 .nav__links a:hover { color: var(--ink); }
+.lang { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.04em; text-decoration: none; color: var(--ink-soft); padding: 8px 9px; border: 1px solid var(--rule); border-radius: 2px; }
+.lang:hover, .footer__lang:hover { color: var(--ink); }
 
 /* ---------- hero ---------- */
 .hero { position: relative; overflow: hidden; padding: clamp(40px, 6vw, 84px) 0 0; }
@@ -229,7 +231,7 @@ h3 { font-size: 1.2rem; letter-spacing: -0.01em; line-height: 1.25; }
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .nav__links { display: none; }
-  .nav__inner .btn { margin-left: auto; }
+  .nav__inner .lang { margin-left: auto; }
   .hero__grid { grid-template-columns: 1fr; }
   .grid3, .steps, .team, .math__cards { grid-template-columns: 1fr; }
   .point, .point + .point { padding: 22px 0; border-left: 0; }
@@ -238,6 +240,9 @@ h3 { font-size: 1.2rem; letter-spacing: -0.01em; line-height: 1.25; }
   .case { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
+  /* no room beside the logo and the button: the footer link takes over */
+  .nav__inner .lang { display: none; }
+  .nav__inner .btn { margin-left: auto; }
   body { font-size: 16px; }
   .stats { grid-template-columns: 1fr; }
   .stats > div, .stats > div + div { padding: 18px 0; border-left: 0; }
