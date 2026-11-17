@@ -231,6 +231,8 @@ M.tally = function (model, y, tally) {
   }
   return tally;
 };
+// The live coverage plot: one point per batch of unseen assets, on a vertical axis from floor to 100%
+M.CHECK = { batch: 16, floor: 0.6 };
 //</model>
 return M;
 }
@@ -316,7 +318,7 @@ if ('IntersectionObserver' in window) {
   var M = buildModel(), P = M.P, rng = Math.random;
   var INK = '#ece8dc', DIM = 'rgba(236,232,220,0.36)', FAINT = 'rgba(236,232,220,0.09)', BG = '#15151b';
   var MONO = "12px 'JetBrains Mono', monospace", SMALL = "10px 'JetBrains Mono', monospace";
-  var PAD = 14, FOOT = 22, TOP = 36, YMAX = 1.15, DRAWS = 2400, STEP = 1700, SEEN = 400000;
+  var PAD = 14, FOOT = 22, TOP = 36, YMAX = 1.15, DRAWS = 2400, STEP = 1700, TICK = 150, WINDOW = 48;
   var sizes = {}, S = null;
   // Labels drawn inside the plots follow the page language
   var FR = document.documentElement.lang === 'fr', LOCALE = FR ? 'fr-FR' : 'en-US';
@@ -330,6 +332,7 @@ if ('IntersectionObserver' in window) {
     forecast: function (m, n) { return 'historique ' + m + ' mois · N = ' + num(n); },
     coverage: function (o) { return 'annoncé ' + pct(0.8, 0) + ' · observé ' + pct(o, 1); },
     seen: function (n) { return 'n = ' + num(n) + ' mois-actifs jamais vus'; },
+    inBand: function (h, n) { return 'dans la bande\u00a0: ' + h + '/' + n + ' mois'; },
     announced: 'annoncé '
   } : {
     month: 'month ',
@@ -337,6 +340,7 @@ if ('IntersectionObserver' in window) {
     forecast: function (m, n) { return 'history ' + m + ' mo · N = ' + num(n) + ' draws'; },
     coverage: function (o) { return 'announced ' + pct(0.8, 0) + ' · observed ' + pct(o, 1); },
     seen: function (n) { return 'n = ' + num(n) + ' unseen asset-months'; },
+    inBand: function (h, n) { return 'in the band: ' + h + '/' + n + ' months'; },
     announced: 'announced '
   };
 
@@ -351,12 +355,19 @@ if ('IntersectionObserver' in window) {
     S.sims = [];
     for (t = 0; t < S.model.p; t++) { S.sims.push([]); }
     S.n = 0; S.q = null; S.since = 0;
+    // The forecast now on screen is checked too: its real months fall inside the band or not
+    var t1 = { n: 0, hit: M.Z.map(function () { return 0; }) };
+    M.tally(S.model, S.y, t1);
+    S.shown = { hit: t1.hit[3], n: t1.n };
+    add(t1);
+    S.marks.push({ at: now(), v: t1.hit[3] / t1.n });
   }
   function setup() {
     var i, train = [];
     for (i = 0; i < P.nTrain; i++) { train.push(M.asset(rng)); }
     S = { train: train, models: P.hist.map(function (m) { return M.fit(train, m); }), k: -1, y: null };
     S.tally = { n: 0, hit: M.Z.map(function () { return 0; }) };
+    S.batches = []; S.marks = []; S.count = 0; S.acc = 0;
     nextStep();
   }
   // Monte Carlo: add n simulated futures, then read low / base / high month by month
@@ -373,9 +384,21 @@ if ('IntersectionObserver' in window) {
     }
     S.q = q;
   }
-  // Coverage: n more assets the model never saw, at a random history length
-  function check(n) {
-    for (var i = 0; i < n; i++) { M.tally(S.models[Math.floor(rng() * S.models.length)], M.asset(rng), S.tally); }
+  // Coverage, on a clock: every TICK, one batch of assets the model never saw, at a random history length.
+  // Each batch gives a point that wanders; everything counted so far gives a line that settles.
+  function add(t) {
+    S.tally.n += t.n;
+    for (var l = 0; l < t.hit.length; l++) { S.tally.hit[l] += t.hit[l]; }
+  }
+  function now() { return S.count - 1 + S.acc / TICK; }
+  function batch() {
+    var t = { n: 0, hit: M.Z.map(function () { return 0; }) };
+    for (var i = 0; i < M.CHECK.batch; i++) { M.tally(S.models[Math.floor(rng() * S.models.length)], M.asset(rng), t); }
+    add(t);
+    S.batches.push({ v: t.hit[3] / t.n, cum: S.tally.hit[3] / S.tally.n });
+    S.count++;
+    if (S.batches.length > WINDOW + 2) { S.batches.shift(); }
+    while (S.marks.length && S.marks[0].at < S.count - WINDOW - 2) { S.marks.shift(); }
   }
 
   function prep(k) {
@@ -478,29 +501,54 @@ if ('IntersectionObserver' in window) {
     baseline(g, L.month + 1, L.month + P.T);
     head(g, L.forecast(m, S.n));
   }
-  // 3. Announced coverage against observed coverage on unseen assets
+  // 3. Coverage of the 80% band over time: batches wander, the running total settles, rings are the forecasts shown
   function drawCheck() {
     var g = prep('check');
     if (!g) { return; }
-    var ctx = g.ctx, top = 52, A = 0.4, B = 1, l, x, y, obs;
-    function px(v) { return PAD + (v - A) / (B - A) * (g.W - 2 * PAD); }
-    function py(v) { return g.y0 - Math.max(0, Math.min(1, (v - A) / (B - A))) * (g.y0 - top); }
+    var ctx = g.ctx, top = 62, A = M.CHECK.floor, tn = now(), dx = (g.W - 2 * PAD) / (WINDOW - 1), i, j, b, x;
+    function px(t) { return g.W - PAD - (tn - t) * dx; }
+    function py(v) { return g.y0 - Math.max(0, Math.min(1, (v - A) / (1 - A))) * (g.y0 - top); }
     ctx.strokeStyle = DIM; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
-    ctx.beginPath(); ctx.moveTo(px(A), py(A)); ctx.lineTo(px(B), py(B)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD, py(0.8) + 0.5); ctx.lineTo(g.W - PAD, py(0.8) + 0.5); ctx.stroke();
     ctx.setLineDash([]);
-    if (S.tally.n) {
-      obs = S.tally.hit[3] / S.tally.n;
-      ctx.strokeStyle = FAINT;
-      ctx.beginPath(); ctx.moveTo(px(0.8) + 0.5, g.y0); ctx.lineTo(px(0.8) + 0.5, py(obs)); ctx.lineTo(PAD, py(obs)); ctx.stroke();
-      for (l = 0; l < M.LEVELS.length; l++) {
-        x = px(M.LEVELS[l]); y = py(S.tally.hit[l] / S.tally.n);
-        ctx.beginPath(); ctx.arc(x, y, l === 3 ? 4.5 : 3, 0, 6.2832);
-        ctx.fillStyle = l === 3 ? SIGNAL : INK; ctx.fill();
-      }
-      head(g, L.coverage(obs));
-      head(g, L.seen(S.tally.n), true);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(PAD, top - 8, g.W - 2 * PAD, g.y0 - top + 8); ctx.clip();
+    j = S.count - S.batches.length;
+    // Each batch of unseen assets
+    ctx.strokeStyle = INK; ctx.fillStyle = INK; ctx.lineWidth = 1; ctx.globalAlpha = 0.45;
+    ctx.beginPath();
+    for (i = 0; i < S.batches.length; i++) { if (i === 0) { ctx.moveTo(px(j + i), py(S.batches[i].v)); } else { ctx.lineTo(px(j + i), py(S.batches[i].v)); } }
+    ctx.stroke();
+    for (i = 0; i < S.batches.length; i++) { ctx.beginPath(); ctx.arc(px(j + i), py(S.batches[i].v), 1.6, 0, 6.2832); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    // Everything counted so far
+    ctx.strokeStyle = SIGNAL; ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    for (i = 0; i < S.batches.length; i++) { if (i === 0) { ctx.moveTo(px(j + i), py(S.batches[i].cum)); } else { ctx.lineTo(px(j + i), py(S.batches[i].cum)); } }
+    ctx.stroke();
+    // The forecasts shown in the middle plot, newest brightest
+    ctx.lineWidth = 1.5;
+    for (i = 0; i < S.marks.length; i++) {
+      b = S.marks[i]; x = px(b.at);
+      ctx.globalAlpha = i === S.marks.length - 1 ? 1 : 0.5;
+      ctx.strokeStyle = SIGNAL; ctx.beginPath();
+      if (b.v < A) {
+        // Below the axis: a triangle pointing down at the floor, not a ring at a false value
+        ctx.moveTo(x - 4.5, py(A) - 7); ctx.lineTo(x + 4.5, py(A) - 7); ctx.lineTo(x, py(A)); ctx.closePath();
+      } else { ctx.arc(x, py(b.v), 4.5, 0, 6.2832); }
+      ctx.stroke();
     }
-    baseline(g, pct(0.4, 0), L.announced + pct(1, 0));
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    // Label of the announced level, on a patch so the lines pass behind it
+    ctx.font = SMALL; ctx.textAlign = 'left';
+    ctx.fillStyle = BG; ctx.fillRect(PAD, py(0.8) - 15, ctx.measureText(pct(0.8, 0)).width + 6, 11);
+    ctx.fillStyle = DIM; ctx.fillText(pct(0.8, 0), PAD + 1, py(0.8) - 6);
+    if (S.tally.n) {
+      head(g, L.coverage(S.tally.hit[3] / S.tally.n));
+      head(g, L.inBand(S.shown.hit, S.shown.n), true);
+    }
+    baseline(g, L.seen(S.tally.n), '');
   }
   function anyVisible() {
     return vis.shapes !== false || vis.forecast !== false || vis.check !== false;
@@ -513,10 +561,14 @@ if ('IntersectionObserver' in window) {
     if (still || anyVisible()) {
       if (!S) { setup(); }
       if (still) {
-        if (!S.n) { S.k = 1; nextStep(); simulate(DRAWS); check(1500); }
+        if (!S.n) {
+          for (var i = 0; i < WINDOW; i++) { batch(); if (i % Math.round(STEP / TICK) === 5) { nextStep(); } }
+          simulate(DRAWS);
+        }
       } else {
         if (S.n < DRAWS) { simulate(Math.max(1, Math.round(dt * 2))); }
-        if (S.tally.n < SEEN) { check(Math.max(1, Math.round(dt / 5))); }
+        S.acc += dt;
+        while (S.acc >= TICK) { S.acc -= TICK; batch(); }
         S.since += dt;
         if (S.since >= STEP) { nextStep(); }
       }

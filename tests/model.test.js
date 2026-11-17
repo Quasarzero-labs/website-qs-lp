@@ -138,6 +138,19 @@ ok('assets start near 1 and decline', train.every((y) => Math.abs(y[0] - 1) < 0.
   ok('calibration: 80% band covers 80% (±3 pts), all history lengths pooled', Math.abs(obs[3] - 0.8) < 0.03, (100 * obs[3]).toFixed(1) + '% on ' + pooled.n + ' asset-months');
   ok('calibration: every level within 5 pts', obs.every((o, l) => Math.abs(o - M.LEVELS[l]) < 0.05), obs.map((o) => (100 * o).toFixed(1)).join(' '));
   ok('calibration: no history length off by more than 5 pts', worstModel < 0.05, (100 * worstModel).toFixed(1) + ' pts');
+  // The live plot shows one point per batch: it must visibly move, stay centred on 80%, and stay on its axis
+  const C = M.CHECK, batches = [];
+  for (let b = 0; b < 1500; b++) {
+    const t = { n: 0, hit: M.Z.map(() => 0) };
+    for (let i = 0; i < C.batch; i++) M.tally(models[Math.floor(rng() * models.length)], M.asset(rng), t);
+    batches.push(t.hit[3] / t.n);
+  }
+  const bMean = batches.reduce((a, b) => a + b, 0) / batches.length;
+  const bSd = Math.sqrt(batches.reduce((a, b) => a + (b - bMean) ** 2, 0) / batches.length);
+  ok('live plot: batches average 80% (±3 pts)', Math.abs(bMean - 0.8) < 0.03, (100 * bMean).toFixed(1) + '%');
+  ok('live plot: batches move by 3 to 9 pts (visible, not chaotic)', bSd > 0.03 && bSd < 0.09, 'sd ' + (100 * bSd).toFixed(1) + ' pts');
+  ok('live plot: under 0.5% of batches fall below the axis floor', batches.filter((v) => v < C.floor).length / batches.length < 0.005,
+    'lowest ' + (100 * Math.min(...batches)).toFixed(0) + '%');
   ok('normal quantiles match the levels', M.LEVELS.length === M.Z.length && Math.abs(M.Z[3] - 1.281552) < 1e-6 && Math.abs(M.Z[5] - 1.959964) < 1e-6);
   // More history, narrower band at the last month (averaged over unseen assets)
   const width = models.map((mm) => test.slice(0, 500).reduce((s, y) => s + M.predict(mm, y).sd[mm.p - 1], 0) / 500);
