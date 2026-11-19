@@ -359,14 +359,14 @@
             <img class="person__photo" src="assets/team/hermann.jpg" width="96" height="96" alt="Hermann Djophant" loading="lazy" decoding="async">
             <h3>Hermann Djophant</h3>
             <p class="person__role">Predictive AI · Forecasting &amp; pricing</p>
-            <p>Formerly tech lead at BMW France on predictive maintenance, forecasting and pricing models; probabilistic oil &amp; gas forecasting at TotalEnergies; predictive AI for EV charging at Gireve.</p>
+            <p>Former tech lead at BMW France working on predictive maintenance, forecasting and pricing models; probabilistic oil &amp; gas forecasting at TotalEnergies; predictive AI for EV charging at Gireve.</p>
             <p class="person__edu">MSc Applied Mathematics (Sorbonne) · Data Science engineer (ISUP)</p>
           </li>
           <li class="person reveal">
             <img class="person__photo" src="assets/team/elhadji.jpg" width="96" height="96" alt="Elhadji Gagny" loading="lazy" decoding="async">
             <h3>Elhadji Gagny</h3>
             <p class="person__role">ML engineer · MLOps &amp; cloud</p>
-            <p>Formerly at TotalEnergies Digital Factory on 100+ industrial anomaly-detection models; tech lead at Lengo AI; forecasting in production at Engie. Teaches cloud at EPITA.</p>
+            <p>Former ML engineer at TotalEnergies Digital Factory working on 100+ industrial anomaly-detection models; tech lead at Lengo AI; forecasting in production at Engie. Teaches cloud at EPITA.</p>
             <p class="person__edu">MSc Applied Mathematics (Sorbonne) · Data Science engineer (ISUP)</p>
           </li>
         </ul>
@@ -426,6 +426,15 @@
       <a href="#top">Back to top</a>
     </div>
   </footer>
+
+  <!-- The AI agent that roams this page, drawn by script.js. Hidden without JavaScript and when motion is reduced -->
+  <canvas class="roam" id="roam" aria-hidden="true"></canvas>
+  <div class="roam__hud" id="roam-hud" hidden>
+    <p class="roam__count" title="An AI agent roams this page. It plans the shortest route to the next document it may read (dots) and never opens the restricted ones (squares)."><svg class="roam__mark" viewBox="6 6 52 52" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="6.5" stroke-dasharray="18.85 11.17 19.37 12.92 20.07 9.77 19.55 13.96 0 0"/><path class="logo__images" d="M45.39 25.16a5.4 5.4 0 1 0 10.8 0a5.4 5.4 0 1 0-10.8 0ZM34.64 50.79a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM8.21 38.84a5 5 0 1 0 10 0a5 5 0 1 0-10 0ZM21.56 13.21a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0Z"/></svg><span class="roam__dot" aria-hidden="true"></span><b id="roam-read">0</b> read<span class="roam__sq" aria-hidden="true"></span><b id="roam-locked">0</b> restricted<span class="roam__more">, never opened</span></p>
+    <button class="roam__btn roam__steer" id="roam-steer" type="button" aria-pressed="false">Steer</button>
+    <button class="roam__btn" id="roam-close" type="button" aria-label="Hide the agent">×</button>
+    <button class="roam__btn roam__open" id="roam-open" type="button" aria-label="Show the agent" hidden><svg class="roam__mark" viewBox="6 6 52 52" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="6.5" stroke-dasharray="18.85 11.17 19.37 12.92 20.07 9.77 19.55 13.96 0 0"/><path class="logo__images" d="M45.39 25.16a5.4 5.4 0 1 0 10.8 0a5.4 5.4 0 1 0-10.8 0ZM34.64 50.79a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM8.21 38.84a5 5 0 1 0 10 0a5 5 0 1 0-10 0ZM21.56 13.21a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0Z"/></svg>Agent</button>
+  </div>
 
   <script src="script.js"></script>
 </body>

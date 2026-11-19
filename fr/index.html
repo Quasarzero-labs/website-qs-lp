@@ -425,6 +425,15 @@
     </div>
   </footer>
 
+  <!-- L’agent IA qui parcourt cette page, dessiné par script.js. Masqué sans JavaScript et quand les animations sont réduites -->
+  <canvas class="roam" id="roam" aria-hidden="true"></canvas>
+  <div class="roam__hud" id="roam-hud" hidden>
+    <p class="roam__count" title="Un agent IA parcourt cette page. Il planifie le plus court chemin vers le prochain document qu’il a le droit de lire (points) et n’ouvre jamais les documents protégés (carrés)."><svg class="roam__mark" viewBox="6 6 52 52" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="6.5" stroke-dasharray="18.85 11.17 19.37 12.92 20.07 9.77 19.55 13.96 0 0"/><path class="logo__images" d="M45.39 25.16a5.4 5.4 0 1 0 10.8 0a5.4 5.4 0 1 0-10.8 0ZM34.64 50.79a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM8.21 38.84a5 5 0 1 0 10 0a5 5 0 1 0-10 0ZM21.56 13.21a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0Z"/></svg><span class="roam__dot" aria-hidden="true"></span><b id="roam-read">0</b> lus<span class="roam__sq" aria-hidden="true"></span><b id="roam-locked">0</b> protégés<span class="roam__more">, jamais ouverts</span></p>
+    <button class="roam__btn roam__steer" id="roam-steer" type="button" aria-pressed="false">Piloter</button>
+    <button class="roam__btn" id="roam-close" type="button" aria-label="Masquer l’agent">×</button>
+    <button class="roam__btn roam__open" id="roam-open" type="button" aria-label="Montrer l’agent" hidden><svg class="roam__mark" viewBox="6 6 52 52" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="6.5" stroke-dasharray="18.85 11.17 19.37 12.92 20.07 9.77 19.55 13.96 0 0"/><path class="logo__images" d="M45.39 25.16a5.4 5.4 0 1 0 10.8 0a5.4 5.4 0 1 0-10.8 0ZM34.64 50.79a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0ZM8.21 38.84a5 5 0 1 0 10 0a5 5 0 1 0-10 0ZM21.56 13.21a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0Z"/></svg>Agent</button>
+  </div>
+
   <script src="../script.js"></script>
 </body>
 </html>
