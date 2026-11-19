@@ -237,6 +237,92 @@ M.CHECK = { batch: 16, floor: 0.6 };
 return M;
 }
 
+// The agent that roams the page. The page is its maze: every block of content is a wall,
+// the margins and the gaps between blocks are its corridors. Some documents are restricted:
+// the agent walks past them and never opens them.
+function buildAgent() {
+//<agent>
+var A = { PAD: 4, STEP: 3, SIZE: 0.42, RESTRICTED: 0.06 };
+// A grid of square cells of g pixels laid over the page. A cell is floor (1) only if it stays
+// PAD pixels clear of every block of content [x0, y0, x1, y1]. Outside the grid is wall.
+A.grid = function (w, h, g, rects) {
+  var c = Math.max(3, Math.floor(w / g)), r = Math.max(3, Math.ceil(h / g));
+  var t = new Uint8Array(c * r).fill(1), k, b, x, y, x0, x1, y0, y1;
+  for (k = 0; k < rects.length; k++) {
+    b = rects[k];
+    x0 = Math.max(0, Math.floor((b[0] - A.PAD) / g)); x1 = Math.min(c - 1, Math.ceil((b[2] + A.PAD) / g) - 1);
+    y0 = Math.max(0, Math.floor((b[1] - A.PAD) / g)); y1 = Math.min(r - 1, Math.ceil((b[3] + A.PAD) / g) - 1);
+    for (y = y0; y <= y1; y++) { for (x = x0; x <= x1; x++) { t[y * c + x] = 0; } }
+  }
+  return { c: c, r: r, g: g, t: t };
+};
+// A hash of the cell in [0, 1): the same cell always holds the same kind of document
+A.hash = function (x, y) {
+  var n = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0;
+  n = Math.imul(n ^ (n >>> 13), 1274126177);
+  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+};
+// Documents on a lattice fixed to the page, one every STEP cells: 1 readable, 2 restricted
+A.dots = function (m) {
+  var it = new Uint8Array(m.t.length), x, y, i;
+  for (y = 0; y < m.r; y += A.STEP) {
+    for (x = 0; x < m.c; x += A.STEP) {
+      i = y * m.c + x;
+      if (m.t[i]) { it[i] = A.hash(x, y) < A.RESTRICTED ? 2 : 1; }
+    }
+  }
+  return it;
+};
+// The neighbour of cell i one step away (d is -1, 1, -c or c), or -1 if it is a wall or off the grid
+A.next = function (m, i, d) {
+  var x = i % m.c;
+  if ((d === -1 && x === 0) || (d === 1 && x === m.c - 1)) { return -1; }
+  return m.t[i + d] ? i + d : -1;
+};
+// Breadth-first search: the shortest route (tiles after `from`, up to the goal), or null
+A.route = function (m, from, goal) {
+  var prev = new Int32Array(m.t.length).fill(-1), q = [from], h = 0, i, k, n, path;
+  prev[from] = from;
+  while (h < q.length) {
+    i = q[h++];
+    if (i !== from && goal(i)) {
+      path = [];
+      while (i !== from) { path.push(i); i = prev[i]; }
+      return path.reverse();
+    }
+    var nb = [-1, 1, -m.c, m.c];
+    for (k = 0; k < 4; k++) { n = A.next(m, i, nb[k]); if (n >= 0 && prev[n] < 0) { prev[n] = i; q.push(n); } }
+  }
+  return null;
+};
+// The agent's plan: the nearest document it may read, among those that pass `ok` if given
+A.plan = function (m, items, from, ok) {
+  return A.route(m, from, function (i) { return items[i] === 1 && (!ok || ok(i)); });
+};
+// Arriving on a tile: a readable document is read, a restricted one is left closed
+A.arrive = function (items, i, stats) {
+  if (items[i] === 1) { items[i] = 0; stats.read++; }
+  return stats;
+};
+// The floor cell nearest to a point in pixels, among rows y0..y1 and cells that pass `ok`; -1 if none.
+// It is where the agent lands when it comes back into view.
+A.nearest = function (m, px, py, ok, y0, y1) {
+  var best = -1, bd = Infinity, x, y, i, d;
+  y0 = Math.max(0, y0 || 0); y1 = Math.min(m.r - 1, y1 === undefined ? m.r - 1 : y1);
+  for (y = y0; y <= y1; y++) {
+    for (x = 0; x < m.c; x++) {
+      i = y * m.c + x;
+      if (!m.t[i] || (ok && !ok(i))) { continue; }
+      d = Math.abs((x + 0.5) * m.g - px) + Math.abs((y + 0.5) * m.g - py);
+      if (d < bd) { bd = d; best = i; }
+    }
+  }
+  return best;
+};
+//</agent>
+return A;
+}
+
 var still = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 var SIGNAL = getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#e8743b';
 var cvs = {
@@ -577,4 +663,285 @@ if ('IntersectionObserver' in window) {
     if (!still) { requestAnimationFrame(frame); }
   }
   frame();
+})();
+
+// The agent at work across the whole page. It keeps to the margins and the gaps between blocks,
+// reads the documents it may read in the part you are reading, walks past the restricted ones,
+// and comes back into view when you scroll. The Steer button hands it to the keyboard.
+(function () {
+  var cv = document.getElementById('roam'), hud = document.getElementById('roam-hud');
+  var ctx = cv && cv.getContext && cv.getContext('2d');
+  if (!ctx || !hud || still) { return; }
+  var A = buildAgent();
+  var INK = '#ece8dc', DOT = 'rgba(236,232,220,0.3)', SQ = 'rgba(236,232,220,0.42)';
+  // Tiles per second; ms: keyboard idle, out of view, nothing left in view, hop, retry
+  var SPEED = 7, IDLE = 6000, LOST = 700, REFILL = 4000, HOP = 420, RETRY = 300;
+  var FR = document.documentElement.lang === 'fr', LOCALE = FR ? 'fr-FR' : 'en-US';
+  var L = FR ? { steer: 'Piloter', steering: 'Échap pour rendre la main' } : { steer: 'Steer', steering: 'Esc to hand back' };
+  function $(id) { return document.getElementById(id); }
+  var ui = { read: $('roam-read'), locked: $('roam-locked'), steer: $('roam-steer'), close: $('roam-close'), open: $('roam-open') };
+  var nav = $('nav');
+  // Lens mark proportions (ring r = 20 in a 64 box): the four gaps, and the four images
+  var GAPS = [19.9, 9.08, 21.64, 10.47, 22.34, 7.68, 21.64, 11.87, 1.05, 0];
+  var IMG = [[-20, 4.2], [70, 3.2], [160, 3.8], [250, 2.6]];
+  // What the agent keeps clear of: text, images, controls, and boxes with a fill or a rule.
+  // Rules that span the whole width, between sections, are doors rather than walls.
+  var SKIP = '#roam, #roam-hud, .nav, .hero__field, .skip, script, style, noscript';
+  var SOLID = /^(IMG|SVG|CANVAS|VIDEO|IFRAME|INPUT|BUTTON|SELECT|TEXTAREA|HR)$/;
+  var G = 16, navH = 64, dirty = true, built = -1e9, last = 0, running = false;
+  var S = { m: null, items: null, seen: null, p: -1, q: -1, f: 0, dir: 0, want: 0, rot: 0, plan: null, hop: null,
+            manual: false, lastKey: 0, stats: { read: 0 }, locked: 0, lostAt: 0, emptyAt: 0, waitUntil: 0, off: false };
+  var shown = { read: -1, locked: -1 };
+
+  function num(v) { return v.toLocaleString(LOCALE); }
+  function px(i) { return (i % S.m.c + 0.5) * G; }
+  function py(i) { return (Math.floor(i / S.m.c) + 0.5) * G; }
+  function at() { return [px(S.p) + (px(S.q) - px(S.p)) * S.f, py(S.p) + (py(S.q) - py(S.p)) * S.f]; }
+
+  // ---- the page, read as a maze ----
+  function painted(c) {
+    var m = /rgba?\(([^)]*)\)/.exec(c || ''), p;
+    if (!m) { return !!c && c !== 'transparent'; }
+    p = m[1].split(/[\s,\/]+/).filter(Boolean);
+    return p.length < 4 || parseFloat(p[3]) > 0;
+  }
+  function rule(w, s, c) { return parseFloat(w) > 0 && s !== 'none' && s !== 'hidden' && painted(c); }
+  function own(e) {
+    for (var n = e.firstChild; n; n = n.nextSibling) { if (n.nodeType === 3 && /\S/.test(n.nodeValue)) { return true; } }
+    return false;
+  }
+  // Blocks still sliding in (reveal on scroll) are placed where they will come to rest
+  function lift(e, cache) {
+    var rv = e.closest('.reveal'), m, v;
+    if (!rv) { return 0; }
+    if (cache.has(rv)) { return cache.get(rv); }
+    m = /matrix\(([^)]*)\)/.exec(getComputedStyle(rv).transform || '');
+    v = m ? parseFloat(m[1].split(',')[5]) || 0 : 0;
+    cache.set(rv, v);
+    return v;
+  }
+  function collect() {
+    var out = [], all = document.body.getElementsByTagName('*'), sx = window.scrollX, sy = window.scrollY;
+    var vw = document.documentElement.clientWidth, cache = new Map(), i, e, r, cs, d, x0, y0, x1, y1, wide;
+    for (i = 0; i < all.length; i++) {
+      e = all[i];
+      if (e.closest(SKIP)) { continue; }
+      r = e.getBoundingClientRect();
+      if (r.width < 0.5 && r.height < 0.5) { continue; }
+      cs = getComputedStyle(e);
+      if (cs.visibility === 'hidden' || cs.position === 'fixed') { continue; }
+      d = lift(e, cache);
+      x0 = r.left + sx; x1 = r.right + sx; y0 = r.top + sy - d; y1 = r.bottom + sy - d;
+      wide = r.width >= vw * 0.98;
+      if (SOLID.test(e.tagName.toUpperCase()) || own(e) || (!wide && painted(cs.backgroundColor))) { out.push([x0, y0, x1, y1]); continue; }
+      if (wide) { continue; }
+      if (rule(cs.borderTopWidth, cs.borderTopStyle, cs.borderTopColor)) { out.push([x0, y0, x1, y0 + 1]); }
+      if (rule(cs.borderBottomWidth, cs.borderBottomStyle, cs.borderBottomColor)) { out.push([x0, y1 - 1, x1, y1]); }
+      if (rule(cs.borderLeftWidth, cs.borderLeftStyle, cs.borderLeftColor)) { out.push([x0, y0, x0 + 1, y1]); }
+      if (rule(cs.borderRightWidth, cs.borderRightStyle, cs.borderRightColor)) { out.push([x1 - 1, y0, x1, y1]); }
+    }
+    return out;
+  }
+  function build(now) {
+    var w = document.documentElement.clientWidth, h = document.documentElement.scrollHeight, old = S.m, a, m, items, seen, i, locked = 0;
+    if (old && S.p >= 0) { a = at(); }
+    G = w < 600 ? 12 : 16;
+    navH = nav ? nav.getBoundingClientRect().height : 0;
+    m = A.grid(w, h, G, collect()); items = A.dots(m); seen = new Uint8Array(m.t.length);
+    // What was read stays read: the lattice is fixed to the page, cells keep their index at the same width
+    if (old && old.c === m.c && S.seen) { seen.set(S.seen.subarray(0, Math.min(S.seen.length, seen.length))); }
+    for (i = 0; i < items.length; i++) {
+      if (items[i] === 1 && seen[i]) { items[i] = 0; } else if (items[i] === 2) { locked++; }
+    }
+    S.m = m; S.items = items; S.seen = seen; S.locked = locked; S.plan = null; S.hop = null; S.f = 0;
+    if (!a) { a = [w - 3 * G, window.scrollY + window.innerHeight * 0.45]; }
+    S.p = S.q = A.nearest(m, a[0], a[1]);
+    dirty = false; built = now;
+  }
+
+  // ---- what the agent does ----
+  // Rows fully on screen, below the nav
+  function band() { return [Math.ceil((window.scrollY + navH) / G), Math.floor((window.scrollY + window.innerHeight) / G) - 1]; }
+  function inBand(i, b) { var y = Math.floor(i / S.m.c); return y >= b[0] && y <= b[1]; }
+  function hop(to, now) { S.hop = { from: S.p, to: to, t0: now }; S.q = S.p; S.f = 0; S.plan = null; }
+  // Called each time the agent reaches the centre of a tile
+  function decide(now) {
+    var b = band(), before = S.stats.read, far;
+    A.arrive(S.items, S.p, S.stats);
+    if (S.stats.read > before) { S.seen[S.p] = 1; }
+    if (S.manual && now - S.lastKey > IDLE) { setManual(false); }
+    if (S.manual) {
+      if (S.want && A.next(S.m, S.p, S.want) >= 0) { S.dir = S.want; }
+      S.q = S.dir && A.next(S.m, S.p, S.dir) >= 0 ? S.p + S.dir : S.p;
+      S.plan = null;
+      return;
+    }
+    S.plan = A.plan(S.m, S.items, S.p, function (i) { return inBand(i, b); });
+    // A document in view that is only reached by a long detour out of view: take the shortcut
+    far = 2 * (b[1] - b[0]) + 2 * Math.round(window.innerWidth / G);
+    if (S.plan && S.plan.length > far) { hop(S.plan[S.plan.length - 1], now); return; }
+    S.q = S.plan ? S.plan[0] : S.p;
+  }
+  // Nothing it can walk to in view: hop to a document in another part of the maze,
+  // or, once everything in view is read, let new documents arrive where the read ones were
+  function idle(b, now) {
+    var t = A.nearest(S.m, px(S.p), py(S.p), function (i) { return S.items[i] === 1; }, b[0], b[1]), i;
+    if (t >= 0) { hop(t, now); return; }
+    if (!S.emptyAt) { S.emptyAt = now; return; }
+    if (now - S.emptyAt < REFILL) { return; }
+    for (i = b[0] * S.m.c; i < (b[1] + 1) * S.m.c && i < S.items.length; i++) { if (S.seen[i]) { S.seen[i] = 0; S.items[i] = 1; } }
+    S.emptyAt = 0;
+  }
+  function step(dt, now) {
+    var b = band(), t, y;
+    S.rot += dt / 1000 * 0.9;
+    if (S.hop) {
+      if (now - S.hop.t0 < HOP) { return; }
+      S.p = S.q = S.hop.to; S.hop = null; S.waitUntil = 0;
+    }
+    // Out of view after a scroll: come back to where the reader is
+    if (!S.manual && !inBand(S.p, b) && !(S.q !== S.p && inBand(S.q, b))) {
+      if (!S.lostAt) { S.lostAt = now; }
+      if (now - S.lostAt > LOST) {
+        S.lostAt = 0;
+        y = Math.min(Math.max(py(S.p), (b[0] + 0.5) * G), (b[1] + 0.5) * G);
+        t = A.nearest(S.m, px(S.p), y, function (i) { return S.items[i] === 1; }, b[0], b[1]);
+        if (t < 0) { t = A.nearest(S.m, px(S.p), y, null, b[0], b[1]); }
+        if (t >= 0) { hop(t, now); return; }
+      }
+    } else { S.lostAt = 0; }
+    if (S.q === S.p) {
+      if (now < S.waitUntil) { return; }
+      decide(now);
+      if (S.hop) { return; }
+      if (S.q === S.p) {
+        if (!S.manual) { idle(b, now); S.waitUntil = now + RETRY; }
+        return;
+      }
+      S.f = 0;
+    }
+    S.emptyAt = 0;
+    S.f += dt / 1000 * SPEED;
+    while (S.f >= 1) {
+      S.f -= 1; S.p = S.q; decide(now);
+      if (S.hop || S.q === S.p) { S.f = 0; break; }
+    }
+  }
+  // While steered from the keyboard, the page scrolls to keep the agent in view
+  function follow() {
+    if (!S.manual || S.hop) { return; }
+    var y = at()[1] - window.scrollY, hi = navH + 0.2 * (window.innerHeight - navH), lo = 0.78 * window.innerHeight;
+    if (y > lo) { window.scrollBy({ top: y - lo, behavior: 'instant' }); }
+    else if (y < hi && window.scrollY > 0) { window.scrollBy({ top: y - hi, behavior: 'instant' }); }
+  }
+
+  // ---- drawing ----
+  function mark(x, y, R) {
+    if (R < 0.5) { return; }
+    var k = R / 20, i, a;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(S.rot);
+    ctx.strokeStyle = INK; ctx.lineWidth = 5 * k; ctx.setLineDash(GAPS.map(function (g) { return g * k; }));
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = SIGNAL;
+    for (i = 0; i < 4; i++) {
+      a = IMG[i][0] * Math.PI / 180;
+      ctx.beginPath(); ctx.arc(R * Math.cos(a), R * Math.sin(a), IMG[i][1] * k * 1.15, 0, 6.2832); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function draw(now) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
+    var sy = window.scrollY, c = S.m.c, r = Math.max(1.1, G * 0.08), s = G * 0.17, y0, y1, x, y, i, a, k, R = G * A.SIZE;
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, navH, w, h - navH); ctx.clip();
+    ctx.translate(-window.scrollX, -sy);
+    y0 = Math.max(0, Math.floor((sy + navH) / G) - 1); y1 = Math.min(S.m.r - 1, Math.ceil((sy + h) / G));
+    // Documents: dots may be read, squares are restricted
+    ctx.fillStyle = DOT; ctx.beginPath();
+    for (y = y0; y <= y1; y++) {
+      for (x = 0; x < c; x += A.STEP) {
+        if (S.items[y * c + x] === 1) { ctx.moveTo((x + 0.5) * G + r, (y + 0.5) * G); ctx.arc((x + 0.5) * G, (y + 0.5) * G, r, 0, 6.2832); }
+      }
+    }
+    ctx.fill();
+    ctx.strokeStyle = SQ; ctx.lineWidth = 1; ctx.beginPath();
+    for (y = y0; y <= y1; y++) {
+      for (x = 0; x < c; x += A.STEP) {
+        if (S.items[y * c + x] === 2) { ctx.rect((x + 0.5) * G - s, (y + 0.5) * G - s, 2 * s, 2 * s); }
+      }
+    }
+    ctx.stroke();
+    a = at();
+    // Its plan: the shortest route to the next document it may read
+    if (S.plan && S.plan.length) {
+      ctx.strokeStyle = SIGNAL; ctx.globalAlpha = 0.55; ctx.lineWidth = 1.5; ctx.setLineDash([3, 4]);
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]);
+      for (i = S.plan[0] === S.q ? 1 : 0; i < S.plan.length; i++) { ctx.lineTo(px(S.plan[i]), py(S.plan[i])); }
+      ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+      i = S.plan[S.plan.length - 1];
+      ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(px(i), py(i), G * 0.28, 0, 6.2832); ctx.stroke();
+    }
+    if (S.hop) {
+      k = Math.min(1, (now - S.hop.t0) / HOP);
+      if (k < 0.5) { mark(px(S.hop.from), py(S.hop.from), R * (1 - 2 * k)); } else { mark(px(S.hop.to), py(S.hop.to), R * (2 * k - 1)); }
+    } else { mark(a[0], a[1], R); }
+    ctx.restore();
+    if (S.stats.read !== shown.read) { shown.read = S.stats.read; ui.read.textContent = num(S.stats.read); }
+    if (S.locked !== shown.locked) { shown.locked = S.locked; ui.locked.textContent = num(S.locked); }
+  }
+
+  // ---- controls ----
+  var KEYS = { ArrowLeft: 'l', ArrowRight: 'r', ArrowUp: 'u', ArrowDown: 'd', a: 'l', d: 'r', w: 'u', s: 'd', q: 'l', z: 'u' };
+  function setManual(on) {
+    S.manual = on; S.plan = null; S.lastKey = performance.now(); S.waitUntil = 0;
+    if (!on) { S.want = 0; S.dir = 0; }
+    ui.steer.setAttribute('aria-pressed', String(on));
+    ui.steer.textContent = on ? L.steering : L.steer;
+  }
+  ui.steer.addEventListener('click', function () { setManual(!S.manual); ui.steer.focus(); });
+  ui.steer.addEventListener('keydown', function (e) {
+    if (!S.m) { return; }
+    if (e.key === 'Escape') { setManual(false); return; }
+    var k = KEYS[e.key];
+    if (!k) { return; }
+    e.preventDefault();
+    if (!S.manual) { setManual(true); }
+    S.want = { l: -1, r: 1, u: -S.m.c, d: S.m.c }[k]; S.lastKey = performance.now();
+  });
+  ui.steer.addEventListener('blur', function () { if (S.manual) { setManual(false); } });
+  // The visitor can put it away; the choice is remembered on this browser only
+  function setOff(off) {
+    S.off = off; cv.hidden = off; hud.classList.toggle('is-off', off); ui.open.hidden = !off;
+    if (off) { if (S.manual) { setManual(false); } } else { start(); }
+    try { localStorage.setItem('qz-agent', off ? 'off' : 'on'); } catch (e) { /* storage blocked: nothing to remember */ }
+  }
+  ui.close.addEventListener('click', function () { setOff(true); ui.open.focus(); });
+  ui.open.addEventListener('click', function () { setOff(false); ui.close.focus(); });
+
+  // The maze is read again when the page changes shape (resize, fonts, an answer opened)
+  function invalidate() { dirty = true; }
+  window.addEventListener('resize', invalidate);
+  if (window.ResizeObserver) { new ResizeObserver(invalidate).observe(document.body); }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(invalidate); }
+  document.addEventListener('toggle', invalidate, true);
+
+  function frame(now) {
+    if (S.off) { running = false; return; }
+    var dt = Math.min(100, Math.max(0, now - last)) || 16;
+    last = now;
+    if (dirty && now - built > 250) { build(now); }
+    if (S.m && S.p >= 0) { step(dt, now); follow(); draw(now); }
+    requestAnimationFrame(frame);
+  }
+  function start() {
+    if (running) { return; }
+    running = true; last = performance.now(); requestAnimationFrame(frame);
+  }
+  var off = false;
+  try { off = localStorage.getItem('qz-agent') === 'off'; } catch (e) { /* storage blocked: start on */ }
+  hud.hidden = false;
+  setOff(off);
 })();

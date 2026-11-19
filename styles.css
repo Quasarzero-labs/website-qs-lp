@@ -224,6 +224,35 @@ h3 { font-size: 1.2rem; letter-spacing: -0.01em; line-height: 1.25; }
 .footer { background: var(--panel); color: var(--on-ink-soft); border-top: 1px solid var(--rule-on-ink); }
 .footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 22px; padding-bottom: 22px; font-family: var(--mono); font-size: 0.74rem; }
 
+/* ---------- the agent that roams the page ---------- */
+/* A layer over the whole viewport that lets every click through; the agent only walks where there is no content */
+.roam { position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 40; }
+.roam[hidden], .roam__hud[hidden], .roam__btn[hidden] { display: none; }
+.roam__hud {
+  position: fixed; right: 16px; bottom: 16px; z-index: 45; display: flex; align-items: center; gap: 8px;
+  padding: 5px 5px 5px 12px; font-family: var(--mono); font-size: 0.7rem; color: var(--ink-soft);
+  background: color-mix(in srgb, var(--panel) 90%, transparent); backdrop-filter: blur(8px);
+  border: 1px solid var(--rule); border-radius: 999px;
+}
+.roam__count { display: flex; align-items: center; white-space: nowrap; cursor: help; }
+.roam__count b { color: var(--ink); font-weight: 500; margin-right: 0.45em; }
+.roam__mark { width: 16px; height: 16px; flex: none; color: var(--ink); margin-right: 10px; }
+.roam__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-mid); margin-right: 6px; flex: none; }
+.roam__sq { width: 7px; height: 7px; border: 1px solid var(--ink-soft); margin: 0 6px 0 12px; flex: none; }
+.roam__btn {
+  font: inherit; color: var(--ink); background: transparent; cursor: pointer; white-space: nowrap;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 5px 10px; transition: border-color .15s, color .15s;
+}
+.roam__btn:hover { border-color: var(--ink-soft); }
+.roam__steer[aria-pressed="true"] { border-color: var(--signal); color: var(--signal-ink); }
+.roam__open { display: flex; align-items: center; border: 0; padding: 2px 6px 2px 0; }
+.roam__open .roam__mark { margin-right: 8px; }
+.roam__hud.is-off { padding: 5px 12px 5px 10px; }
+.roam__hud.is-off > :not(.roam__open) { display: none; }
+/* No keyboard to steer with on a touch screen, and a shorter counter on a phone */
+@media (hover: none) and (pointer: coarse) { .roam__steer { display: none; } }
+@media (max-width: 600px) { .roam__steer, .roam__more { display: none; } .roam__hud { right: 12px; bottom: 12px; } }
+
 /* ---------- legal notice ---------- */
 .legal h1 { font-size: clamp(2rem, 4.4vw, 3.2rem); max-width: 22ch; }
 .legal__updated { font-family: var(--mono); font-size: 0.74rem; color: var(--ink-soft); margin-top: 14px; }
@@ -270,4 +299,6 @@ h3 { font-size: 1.2rem; letter-spacing: -0.01em; line-height: 1.25; }
   html { scroll-behavior: auto; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .flow__node--slot.is-swapping .flow__v { animation: none; }
+  .roam, .roam__hud { display: none; }
 }
+@media print { .roam, .roam__hud { display: none; } }
